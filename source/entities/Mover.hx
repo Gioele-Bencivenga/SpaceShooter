@@ -1,20 +1,42 @@
 package entities;
 
+import flixel.util.FlxColor;
+import echo.Body;
+import hxmath.math.Vector2;
 import flixel.FlxSprite;
 
 using utilities.FlxEcho;
 
 class Mover extends FlxSprite {
 	/// CONTROL FLAGS
-	var canMove:Bool;
-	var forwardPressed:Bool;
-	var backwardPressed:Bool;
-	var leftPressed:Bool;
-	var rightPressed:Bool;
+	var canMove:Bool = false;
+	var forwardPressed:Bool = false;
+	var backwardPressed:Bool = false;
+	var leftPressed:Bool = false;
+	var rightPressed:Bool = false;
 
-	public function new(x:Float, y:Float, w:Int, h:Int, c:Int, control:Bool = false) {
-		super(x, y);
-		makeGraphic(w, h, c);
+	/// MOVEMENT
+	var maxVel:Int;
+
+	/// BODY
+	public var body(default, null):Body;
+
+	public function new() {
+		super();
+
+		this.add_body();
+	}
+
+	public function init(_x:Float, _y:Float, _width:Int, _height:Int, _color:FlxColor, _canMove = true) {
+		body = this.get_body();
+		body.drag.set(1, 1);
+		body.max_rotational_velocity = 10;
+		//body.max_velocity.length = 200;
+		maxVel = 200;
+		x = _x;
+		y = _y;
+		makeGraphic(_width, _height, _color);
+		canMove = _canMove;
 	}
 
 	override function update(elapsed:Float) {
@@ -23,46 +45,73 @@ class Mover extends FlxSprite {
 		super.update(elapsed);
 	}
 
-	function updateMovement() {
-		var body = this.get_body();
+	function updateMovement1() {
+		if (body.velocity.length <= maxVel) {
+			if (canMove) {
+				/*if (forwardPressed && backwardPressed) // opposing directions cancel each other out
+					forwardPressed = backwardPressed = false;
+				if (leftPressed && rightPressed)
+					leftPressed = rightPressed = false;*/
 
-		if (canMove) {
-			// opposing directions cancel each other out
-			if (forwardPressed && backwardPressed)
-				forwardPressed = backwardPressed = false;
-			if (leftPressed && rightPressed)
-				leftPressed = rightPressed = false;
+				if (forwardPressed || backwardPressed || leftPressed || rightPressed) {
+					if (leftPressed) {
+						body.rotation = 180;
+					}
+					if (rightPressed) {
+						body.rotation = 0;
+					}
+					if (forwardPressed) {
+						body.rotation = 270;
+					}
+					if (backwardPressed) {
+						body.rotation = 90;
+					}
 
-			if (forwardPressed || backwardPressed || leftPressed || rightPressed) {
-				directionAngle = 0;
-				if (up) {
-					directionAngle = -90;
-					if (left)
-						directionAngle -= 45;
-					else if (right)
-						directionAngle += 45;
-					facing = FlxObject.UP;
-				} else if (down) {
-					directionAngle = 90;
-					if (left)
-						directionAngle += 45;
-					else if (right)
-						directionAngle -= 45;
-					facing = FlxObject.DOWN;
-				} else if (left) {
-					directionAngle = 180;
-					facing = FlxObject.LEFT;
-				} else if (right) {
-					directionAngle = 0;
-					facing = FlxObject.RIGHT;
+					if (forwardPressed && leftPressed) {
+						body.rotation = 225;
+					}
+					if (forwardPressed && rightPressed) {
+						body.rotation = 315;
+					}
+					if (backwardPressed && leftPressed) {
+						body.rotation = 135;
+					}
+					if (backwardPressed && rightPressed) {
+						body.rotation = 45;
+					}
+
+					body.acceleration = Vector2.fromPolar(body.rotation * Math.PI / 180,
+						200); // body.rotation is in degrees while the method expects radians, so we convert it
 				}
 			}
-			body.velocity.x = 0;
-			if (FlxG.keys.pressed.LEFT)
-				body.velocity.x -= 128;
-			if (FlxG.keys.pressed.RIGHT)
-				body.velocity.x += 128;
-			if (FlxG.keys.justPressed.UP && isTouching(FLOOR))
-				body.velocity.y -= 256;
 		}
 	}
+
+	function updateMovement() {
+		if (body.velocity.length <= maxVel) {
+			if (canMove) {
+				if (forwardPressed && backwardPressed) // opposing directions cancel each other out
+					forwardPressed = backwardPressed = false;
+				if (leftPressed && rightPressed)
+					leftPressed = rightPressed = false;
+
+				if (forwardPressed || backwardPressed || leftPressed || rightPressed) {
+					if (forwardPressed) {
+						body.acceleration = Vector2.fromPolar(body.rotation * Math.PI / 180,
+							100); // body.rotation is in degrees while the method expects radians, so we convert it
+					}
+					if (backwardPressed) {
+						body.acceleration = Vector2.fromPolar(body.rotation * Math.PI / 180, -100);
+					}
+
+					if (leftPressed) {
+						body.rotational_velocity = -10;
+					}
+					if (rightPressed) {
+						body.rotational_velocity = 10;
+					}
+				}
+			}
+		}
+	}
+}
