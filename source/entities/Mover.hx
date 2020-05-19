@@ -31,8 +31,8 @@ class Mover extends FlxSprite {
 		body = this.get_body();
 		body.drag.set(1, 1);
 		body.max_rotational_velocity = 10;
-		//body.max_velocity.length = 200;
-		maxVel = 200;
+		body.max_velocity_length = 200;
+		// maxVel = 200;
 		x = _x;
 		y = _y;
 		makeGraphic(_width, _height, _color);
@@ -40,76 +40,72 @@ class Mover extends FlxSprite {
 	}
 
 	override function update(elapsed:Float) {
-		updateMovement();
+		updateMovement1();
 
 		super.update(elapsed);
 	}
 
 	function updateMovement1() {
-		if (body.velocity.length <= maxVel) {
-			if (canMove) {
-				/*if (forwardPressed && backwardPressed) // opposing directions cancel each other out
+		if (canMove) {
+			/*if (forwardPressed && backwardPressed) // opposing directions cancel each other out
 					forwardPressed = backwardPressed = false;
 				if (leftPressed && rightPressed)
-					leftPressed = rightPressed = false;*/
+					leftPressed = rightPressed = false; */
 
-				if (forwardPressed || backwardPressed || leftPressed || rightPressed) {
-					if (leftPressed) {
-						body.rotation = 180;
-					}
-					if (rightPressed) {
-						body.rotation = 0;
-					}
-					if (forwardPressed) {
-						body.rotation = 270;
-					}
-					if (backwardPressed) {
-						body.rotation = 90;
-					}
-
-					if (forwardPressed && leftPressed) {
-						body.rotation = 225;
-					}
-					if (forwardPressed && rightPressed) {
-						body.rotation = 315;
-					}
-					if (backwardPressed && leftPressed) {
-						body.rotation = 135;
-					}
-					if (backwardPressed && rightPressed) {
-						body.rotation = 45;
-					}
-
-					body.acceleration = Vector2.fromPolar(body.rotation * Math.PI / 180,
-						200); // body.rotation is in degrees while the method expects radians, so we convert it
+			if (forwardPressed || backwardPressed || leftPressed || rightPressed) {
+				if (leftPressed) {
+					body.rotation = 180;
 				}
+				if (rightPressed) {
+					body.rotation = 0;
+				}
+				if (forwardPressed) {
+					body.rotation = 270;
+				}
+				if (backwardPressed) {
+					body.rotation = 90;
+				}
+
+				if (forwardPressed && leftPressed) {
+					body.rotation = 225;
+				}
+				if (forwardPressed && rightPressed) {
+					body.rotation = 315;
+				}
+				if (backwardPressed && leftPressed) {
+					body.rotation = 135;
+				}
+				if (backwardPressed && rightPressed) {
+					body.rotation = 45;
+				}
+
+				body.acceleration = Vector2.fromPolar(body.rotation * Math.PI / 180,
+					200); // body.rotation is in degrees while the method expects radians, so we convert it
 			}
 		}
 	}
 
 	function updateMovement() {
-		if (body.velocity.length <= maxVel) {
-			if (canMove) {
-				if (forwardPressed && backwardPressed) // opposing directions cancel each other out
-					forwardPressed = backwardPressed = false;
-				if (leftPressed && rightPressed)
-					leftPressed = rightPressed = false;
+		if (canMove) {
+			if (forwardPressed && backwardPressed) // opposing directions cancel each other out
+				forwardPressed = backwardPressed = false;
+			if (leftPressed && rightPressed)
+				leftPressed = rightPressed = false;
 
-				if (forwardPressed || backwardPressed || leftPressed || rightPressed) {
-					if (forwardPressed) {
-						body.acceleration = Vector2.fromPolar(body.rotation * Math.PI / 180,
-							100); // body.rotation is in degrees while the method expects radians, so we convert it
-					}
-					if (backwardPressed) {
-						body.acceleration = Vector2.fromPolar(body.rotation * Math.PI / 180, -100);
-					}
+			if (forwardPressed || backwardPressed || leftPressed || rightPressed) {
+				if (forwardPressed) {
+					body.acceleration = Vector2.fromPolar(body.rotation * Math.PI / 180,
+						100); // body.rotation is in degrees while the method expects radians, so we convert it
+				}
+				if (backwardPressed) {
+					body.acceleration = Vector2.fromPolar(body.rotation * Math.PI / 180, -100);
+				}
 
-					if (leftPressed) {
-						body.rotational_velocity = -10;
-					}
-					if (rightPressed) {
-						body.rotational_velocity = 10;
-					}
+				if (leftPressed) {
+					body.rotational_velocity = -10;
+				}
+				if (rightPressed) {
+					body.rotational_velocity = 10;
 				}
 			}
 		}
