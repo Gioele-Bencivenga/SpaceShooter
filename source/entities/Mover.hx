@@ -15,9 +15,6 @@ class Mover extends FlxSprite {
 	var leftPressed:Bool = false;
 	var rightPressed:Bool = false;
 
-	/// MOVEMENT
-	var maxVel:Int;
-
 	/// BODY
 	public var body(default, null):Body;
 
@@ -29,10 +26,9 @@ class Mover extends FlxSprite {
 
 	public function init(_x:Float, _y:Float, _width:Int, _height:Int, _color:FlxColor, _canMove = true) {
 		body = this.get_body();
-		body.drag.set(1, 1);
-		body.max_rotational_velocity = 10;
+		body.drag_length = 5;
+		body.max_rotational_velocity = 50;
 		body.max_velocity_length = 200;
-		// maxVel = 200;
 		x = _x;
 		y = _y;
 		makeGraphic(_width, _height, _color);
@@ -40,7 +36,7 @@ class Mover extends FlxSprite {
 	}
 
 	override function update(elapsed:Float) {
-		updateMovement1();
+		updateMovement();
 
 		super.update(elapsed);
 	}
@@ -85,6 +81,11 @@ class Mover extends FlxSprite {
 		}
 	}
 
+	/**
+	 * This function checks if the Mover can move, if so it checks if any of
+	 * @param forwardPressed @param backwardPressed @param leftPressed or @param rightPressed
+	 * are true, and if so applies forces to the body
+	 */
 	function updateMovement() {
 		if (canMove) {
 			if (forwardPressed && backwardPressed) // opposing directions cancel each other out
@@ -102,10 +103,10 @@ class Mover extends FlxSprite {
 				}
 
 				if (leftPressed) {
-					body.rotational_velocity = -10;
+					body.rotational_velocity = -30;
 				}
 				if (rightPressed) {
-					body.rotational_velocity = 10;
+					body.rotational_velocity = 30;
 				}
 			}
 		}
