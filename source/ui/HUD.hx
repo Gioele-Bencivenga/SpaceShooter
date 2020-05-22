@@ -93,7 +93,7 @@ class HUD extends FlxTypedGroup<FlxSprite> {
 	}
 
 	public function updateHUD() {
-		txtHealth.text = 'rotation: ${player.body.rotation}';
+		txtHealth.text = 'rotation: ${player.body.rotational_velocity}';
 
 		//txtDeaths.text = 'INFECTED: ${nOfInfected}, DEATHS: ${PlayState.deadCount}';
 

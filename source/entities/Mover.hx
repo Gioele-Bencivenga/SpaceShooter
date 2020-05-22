@@ -26,9 +26,10 @@ class Mover extends FlxSprite {
 
 	public function init(_x:Float, _y:Float, _width:Int, _height:Int, _color:FlxColor, _canMove = true) {
 		body = this.get_body();
-		body.drag_length = 5;
-		body.max_rotational_velocity = 50;
 		body.max_velocity_length = 200;
+		body.drag_length = 5;
+		body.max_rotational_velocity = 150;
+		body.rotational_drag = 50;
 		x = _x;
 		y = _y;
 		makeGraphic(_width, _height, _color);
@@ -103,10 +104,10 @@ class Mover extends FlxSprite {
 				}
 
 				if (leftPressed) {
-					body.rotational_velocity = -30;
+					body.rotational_velocity -= 10;
 				}
 				if (rightPressed) {
-					body.rotational_velocity = 30;
+					body.rotational_velocity += 10;
 				}
 			}
 		}
