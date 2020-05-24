@@ -15,23 +15,26 @@ class Mover extends FlxSprite {
 	var leftPressed:Bool = false;
 	var rightPressed:Bool = false;
 
+	///
+	var thrust:Int;
+
 	/// BODY
 	public var body(default, null):Body;
 
 	public function new() {
 		super();
 
-		this.add_body();
+		this.add_body({mass: 1});
+		body = this.get_body();
 	}
 
 	public function init(_x:Float, _y:Float, _width:Int, _height:Int, _color:FlxColor, _canMove = true) {
-		body = this.get_body();
-		body.max_velocity_length = 200;
-		body.drag_length = 5;
+		thrust = 250;
+		body.max_velocity_length = 1000;
 		body.max_rotational_velocity = 150;
 		body.rotational_drag = 50;
-		x = _x;
-		y = _y;
+		body.x = _x;
+		body.y = _y;
 		makeGraphic(_width, _height, _color);
 		canMove = _canMove;
 	}
@@ -97,10 +100,10 @@ class Mover extends FlxSprite {
 			if (forwardPressed || backwardPressed || leftPressed || rightPressed) {
 				if (forwardPressed) {
 					body.acceleration = Vector2.fromPolar(body.rotation * Math.PI / 180,
-						100); // body.rotation is in degrees while the method expects radians, so we convert it
+						thrust); // body.rotation is in degrees while the method expects radians, so we convert it
 				}
 				if (backwardPressed) {
-					body.acceleration = Vector2.fromPolar(body.rotation * Math.PI / 180, -100);
+					body.acceleration = Vector2.fromPolar(body.rotation * Math.PI / 180, -thrust);
 				}
 
 				if (leftPressed) {
