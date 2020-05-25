@@ -12,14 +12,21 @@ class Tile extends FlxSprite {
 
 	public function new() {
 		super();
-
-		//this.add_body({mass: 0});
 	}
 
 	public function init(_x:Float, _y:Float, _width:Int, _height:Int) {
+		width = _width; // setting the FlxObject's properties is needed unless you specify the body's dimnesions when creating it
+		height = _height;
+
+		/// GRAPHIC
+		makeGraphic(_width, _height, FlxColor.WHITE);
+
+		/// BODY
+		this.add_body({mass: 0});
 		body = this.get_body();
+
+		/// POSITION
 		body.x = _x;
 		body.y = _y;
-		makeGraphic(_width, _height, FlxColor.WHITE);
 	}
 }

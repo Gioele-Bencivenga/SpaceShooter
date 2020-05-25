@@ -49,13 +49,11 @@ class PlayState extends FlxState {
 					case 1:
 						// Just a regular old terrain block
 						var tile = new Tile();
-						tile.add_body({mass: 0});
 						tile.init(i * 16, j * 16, 16, 16);
 						tile.add_to_group(terrainTiles);
 
 					case 3:
 						player = new Player();
-						player.add_body({mass: 1});
 						player.init(i * 16, j * 16, 8, 12, FlxColor.ORANGE);
 						player.add_to_group(movers);
 
@@ -65,16 +63,15 @@ class PlayState extends FlxState {
 			}
 		}
 
-		// why do I not get collisions?
-		// movers.listen(terrainTiles);
-		player.listen(terrainTiles);
+		movers.listen(terrainTiles);
+		//player.listen(terrainTiles);
 
 		/// HUD
 		var hud = new HUD(player);
 		add(hud);
 
 		/// CAMERA SETUP
-		FlxG.camera.follow(player, FlxCameraFollowStyle.SCREEN_BY_SCREEN);
+		FlxG.camera.follow(player, FlxCameraFollowStyle.TOPDOWN_TIGHT);
 
 		super.create();
 	}
