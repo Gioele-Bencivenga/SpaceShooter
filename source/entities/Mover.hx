@@ -24,11 +24,11 @@ class Mover extends FlxSprite {
 	public function new() {
 		super();
 
-		this.add_body({mass: 1});
-		body = this.get_body();
+		//this.add_body({mass: 1});
 	}
 
 	public function init(_x:Float, _y:Float, _width:Int, _height:Int, _color:FlxColor, _canMove = true) {
+		body = this.get_body();
 		thrust = 250;
 		body.max_velocity_length = 1000;
 		body.max_rotational_velocity = 150;
