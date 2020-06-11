@@ -24,6 +24,9 @@
 
 	<!--Mobile-specific-->
 	<window if="mobile" orientation="landscape" fullscreen="true" width="0" height="0" />
+	
+	<!-- you may need to set android sdk version to 23 or higher (as some versions of google play services requires that) https://github.com/HaxeExtension/extension-admob -->
+	<android target-sdk-version="23" if="android" />
 
 	<!-- _____________________________ Path Settings ____________________________ -->
 
@@ -35,11 +38,14 @@
 
 	<haxelib name="flixel" />
 
-	<!--In case you want to use the addons package-->
+	<!-- In case you want to use the addons package -->
 	<haxelib name="flixel-addons" />
 
-	<!--Physics library by austineast-->
+	<!-- Physics library by austineast -->
 	<haxelib name="echo" />
+
+	<!-- AdMob extension for displaying ads -->
+	<haxelib name="extension-admob" />
 
 	<!--In case you want to use the ui package-->
 	<!--<haxelib name="flixel-ui" />-->
