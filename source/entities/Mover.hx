@@ -39,11 +39,11 @@ class Mover extends FlxSprite {
 
 		/// MOVEMENT
 		canMove = _canMove;
-		thrust = 250;
+		thrust = 260;
 		rotThrust = 100;
 		body.max_velocity_length = 1000;
 		body.max_rotational_velocity = 150;
-		body.rotational_drag = 100;
+		body.rotational_drag = 150;
 
 		/// POSITION
 		body.x = _x;
