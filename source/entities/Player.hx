@@ -1,11 +1,20 @@
 package entities;
 
+import flixel.ui.FlxVirtualPad;
 import flixel.util.FlxColor;
 import flixel.FlxG;
 
 class Player extends Mover {
+	#if mobile
+	public var virtualPad:FlxVirtualPad;
+	#end
+
 	public function new() {
 		super();
+
+		#if mobile
+		virtualPad = new FlxVirtualPad(FULL, NONE);
+		#end
 	}
 
 	override function init(_x:Float, _y:Float, _width:Int, _height:Int, _color:FlxColor, _canMove = true) {
@@ -19,9 +28,16 @@ class Player extends Mover {
 	}
 
 	function getInput() {
-		forwardPressed = FlxG.keys.anyPressed([UP, W]);
-		backwardPressed = FlxG.keys.anyPressed([DOWN, S]);
+		#if FLX_KEYBOARD
+		upPressed = FlxG.keys.anyPressed([UP, W]);
+		downPressed = FlxG.keys.anyPressed([DOWN, S]);
 		leftPressed = FlxG.keys.anyPressed([LEFT, A]);
 		rightPressed = FlxG.keys.anyPressed([RIGHT, D]);
+		#else
+		upPressed = upPressed || virtualPad.buttonUp.pressed;
+		downPressed = downPressed || virtualPad.buttonDown.pressed;
+		leftPressed = leftPressed || virtualPad.buttonLeft.pressed;
+		rightPressed = rightPressed || virtualPad.buttonRight.pressed;
+		#end
 	}
 }

@@ -2,7 +2,7 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="SpaceShooter" file="SpaceShooter" main="Main" version="0.0.1" company="Gioele Bencivenga" />
+	<app title="SpaceShooter" file="SpaceShooter" main="Main" version="0.0.1" company="Gioele Bencivenga" package="com.haxeflixel.orbitEscapeByGio"/>
 
 	<!--The flixel preloader is not accurate in Chrome. You can use it regularly if you embed the swf into a html file
 		or you can set the actual size of your file manually at "FlxPreloaderBase-onUpdate-bytesTotal"-->
@@ -26,7 +26,7 @@
 	<window if="mobile" orientation="landscape" fullscreen="true" width="0" height="0" />
 	
 	<!-- you may need to set android sdk version to 23 or higher (as some versions of google play services requires that) https://github.com/HaxeExtension/extension-admob -->
-	<android target-sdk-version="23" if="android" />
+	<android target-sdk-version="29" if="android" />
 
 	<!-- _____________________________ Path Settings ____________________________ -->
 
@@ -45,7 +45,7 @@
 	<haxelib name="echo" />
 
 	<!-- AdMob extension for displaying ads -->
-	<haxelib name="extension-admob" />
+	<!-- <haxelib name="extension-admob" /> -->
 
 	<!--In case you want to use the ui package-->
 	<!--<haxelib name="flixel-ui" />-->
