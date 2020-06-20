@@ -10,8 +10,6 @@ import flixel.FlxG;
 
 class Player extends Mover {
 	/// CONTROL FLAGS
-	var touchPressed:Bool = false;
-
 	var pressPosition:FlxVector;
 
 	public function new() {
@@ -20,6 +18,7 @@ class Player extends Mover {
 
 	override function init(_x:Float, _y:Float, _width:Int, _height:Int, _color:FlxColor, _canMove = true) {
 		pressPosition = FlxVector.get(1, 1);
+
 		super.init(_x, _y, _width, _height, _color);
 	}
 
@@ -33,13 +32,15 @@ class Player extends Mover {
 		#if FLX_KEYBOARD
 		if (FlxG.mouse.pressed) {
 			pressPosition.set(FlxG.mouse.x, FlxG.mouse.y);
+
 			direction.set(getPosition().x, getPosition().y);
 			direction.subtractPoint(pressPosition);
 		}
 		#else
-		for (touch in FlxG.touches.list) {
-			touchPressed = touch.justPressed;
-			direction = FlxVector.weak(touch.justPressedPosition.x, touch.justPressedPosition.y);
+		// this doesn't work properly and I don't know why
+		if (FlxG.touches.getFirst() != null) {
+			var touchInput = FlxG.touches.getFirst();
+			pressPosition.set(touchInput.getScreenPosition().x, touchInput.getScreenPosition().y);
 		}
 		#end
 	}

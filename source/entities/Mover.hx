@@ -12,7 +12,7 @@ using utilities.FlxEcho;
 class Mover extends FlxSprite {
 	/// CONTROL FLAGS
 	var canMove:Bool = false;
-	var direction:FlxVector;
+	public var direction(default, null):FlxVector;
 
 	/// MOVEMENT
 	var thrust:Int;
@@ -60,6 +60,7 @@ class Mover extends FlxSprite {
 		if (canMove) {
 			var rotationVect = FlxVector.get(1, 1);
 			rotationVect.degrees = body.rotation;
+
 			if (rotationVect.crossProductLength(direction) > 0) {
 				body.rotational_velocity = rotationalThrust;
 			} else if (rotationVect.crossProductLength(direction) < 0) {
@@ -67,6 +68,8 @@ class Mover extends FlxSprite {
 			} else {
 				body.rotational_velocity = 0;
 			}
+
+			body.acceleration.set(direction.x, direction.y);
 		}
 	}
 }
