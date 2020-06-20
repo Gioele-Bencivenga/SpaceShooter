@@ -40,7 +40,7 @@ class Mover extends FlxSprite {
 		canMove = _canMove;
 		thrust = 260;
 		rotationalThrust = 150;
-		direction = new FlxVector();
+		direction = FlxVector.get(1, 1);
 		body.max_velocity_length = 1000;
 		body.max_rotational_velocity = 500;
 		body.rotational_drag = 150;

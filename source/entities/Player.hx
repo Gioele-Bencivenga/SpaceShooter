@@ -19,7 +19,7 @@ class Player extends Mover {
 	}
 
 	override function init(_x:Float, _y:Float, _width:Int, _height:Int, _color:FlxColor, _canMove = true) {
-		pressPosition = new FlxVector();
+		pressPosition = FlxVector.get(1, 1);
 		super.init(_x, _y, _width, _height, _color);
 	}
 
@@ -32,8 +32,8 @@ class Player extends Mover {
 	function handleInput() {
 		#if FLX_KEYBOARD
 		if (FlxG.mouse.pressed) {
-			pressPosition = FlxVector.weak(FlxG.mouse.x, FlxG.mouse.y);
-			direction = FlxVector.weak(getPosition().x, getPosition().y);
+			pressPosition.set(FlxG.mouse.x, FlxG.mouse.y);
+			direction.set(getPosition().x, getPosition().y);
 			direction.subtractPoint(pressPosition);
 		}
 		#else
