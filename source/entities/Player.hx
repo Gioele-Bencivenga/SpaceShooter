@@ -1,43 +1,46 @@
 package entities;
 
+import flixel.math.FlxPoint;
+import flixel.math.FlxVector;
+import flixel.input.touch.FlxTouchManager;
+import flixel.input.touch.FlxTouch;
 import flixel.ui.FlxVirtualPad;
 import flixel.util.FlxColor;
 import flixel.FlxG;
 
 class Player extends Mover {
-	#if mobile
-	public var virtualPad:FlxVirtualPad;
-	#end
+	/// CONTROL FLAGS
+	var touchPressed:Bool = false;
+
+	var pressPosition:FlxVector;
 
 	public function new() {
 		super();
-
-		#if mobile
-		virtualPad = new FlxVirtualPad(FULL, NONE);
-		#end
 	}
 
 	override function init(_x:Float, _y:Float, _width:Int, _height:Int, _color:FlxColor, _canMove = true) {
+		pressPosition = new FlxVector();
 		super.init(_x, _y, _width, _height, _color);
 	}
 
 	override function update(elapsed:Float) {
-		getInput();
+		handleInput();
 
 		super.update(elapsed);
 	}
 
-	function getInput() {
+	function handleInput() {
 		#if FLX_KEYBOARD
-		upPressed = FlxG.keys.anyPressed([UP, W]);
-		downPressed = FlxG.keys.anyPressed([DOWN, S]);
-		leftPressed = FlxG.keys.anyPressed([LEFT, A]);
-		rightPressed = FlxG.keys.anyPressed([RIGHT, D]);
+		if (FlxG.mouse.pressed) {
+			pressPosition = FlxVector.weak(FlxG.mouse.x, FlxG.mouse.y);
+			direction = FlxVector.weak(getPosition().x, getPosition().y);
+			direction.subtractPoint(pressPosition);
+		}
 		#else
-		upPressed = upPressed || virtualPad.buttonUp.pressed;
-		downPressed = downPressed || virtualPad.buttonDown.pressed;
-		leftPressed = leftPressed || virtualPad.buttonLeft.pressed;
-		rightPressed = rightPressed || virtualPad.buttonRight.pressed;
+		for (touch in FlxG.touches.list) {
+			touchPressed = touch.justPressed;
+			direction = FlxVector.weak(touch.justPressedPosition.x, touch.justPressedPosition.y);
+		}
 		#end
 	}
 }

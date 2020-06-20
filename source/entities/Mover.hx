@@ -1,5 +1,7 @@
 package entities;
 
+import flixel.tweens.FlxTween;
+import flixel.math.FlxVector;
 import flixel.util.FlxColor;
 import echo.Body;
 import hxmath.math.Vector2;
@@ -10,14 +12,11 @@ using utilities.FlxEcho;
 class Mover extends FlxSprite {
 	/// CONTROL FLAGS
 	var canMove:Bool = false;
-	var upPressed:Bool = false;
-	var downPressed:Bool = false;
-	var leftPressed:Bool = false;
-	var rightPressed:Bool = false;
+	var direction:FlxVector;
 
 	/// MOVEMENT
 	var thrust:Int;
-	var rotThrust:Int;
+	var rotationalThrust:Int;
 
 	/// BODY
 	public var body(default, null):Body;
@@ -40,9 +39,10 @@ class Mover extends FlxSprite {
 		/// MOVEMENT
 		canMove = _canMove;
 		thrust = 260;
-		rotThrust = 100;
+		rotationalThrust = 150;
+		direction = new FlxVector();
 		body.max_velocity_length = 1000;
-		body.max_rotational_velocity = 150;
+		body.max_rotational_velocity = 500;
 		body.rotational_drag = 150;
 
 		/// POSITION
@@ -51,40 +51,21 @@ class Mover extends FlxSprite {
 	}
 
 	override function update(elapsed:Float) {
-		updateMovement();
+		handleMovement();
 
 		super.update(elapsed);
 	}
 
-	/**
-	 * This function checks if the Mover can move, if so it checks if any of the pressed flags are true,
-	 * and if so applies forces to the body.
-	 *
-	 * `upPressed` and `downPressed` apply acceleration
-	 * while `leftPressed` and `rightPressed` apply rotational velocity.
-	 */
-	function updateMovement() {
+	function handleMovement() {
 		if (canMove) {
-			if (upPressed && downPressed) // opposing directions cancel each other out
-				upPressed = downPressed = false;
-			if (leftPressed && rightPressed)
-				leftPressed = rightPressed = false;
-
-			if (upPressed || downPressed || leftPressed || rightPressed) {
-				if (upPressed) {
-					body.acceleration = Vector2.fromPolar(body.rotation * Math.PI / 180,
-						thrust); // body.rotation is in degrees while the method expects radians, so we convert it
-				}
-				if (downPressed) {
-					body.acceleration = Vector2.fromPolar(body.rotation * Math.PI / 180, -thrust);
-				}
-
-				if (leftPressed) {
-					body.rotational_velocity = -rotThrust;
-				}
-				if (rightPressed) {
-					body.rotational_velocity = rotThrust;
-				}
+			var rotationVect = FlxVector.get(1, 1);
+			rotationVect.degrees = body.rotation;
+			if (rotationVect.crossProductLength(direction) > 0) {
+				body.rotational_velocity = rotationalThrust;
+			} else if (rotationVect.crossProductLength(direction) < 0) {
+				body.rotational_velocity = -rotationalThrust;
+			} else {
+				body.rotational_velocity = 0;
 			}
 		}
 	}

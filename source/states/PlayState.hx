@@ -17,6 +17,7 @@ class PlayState extends FlxState {
 
 	var player:Player;
 
+	// temporary, this will have to go
 	var level_data = [
 		[1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1],
 		[1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1],
@@ -99,10 +100,6 @@ class PlayState extends FlxState {
 			}
 		}
 
-		#if mobile
-		add(player.virtualPad);
-		#end
-
 		movers.listen(terrainTiles);
 
 		/// HUD
@@ -118,14 +115,5 @@ class PlayState extends FlxState {
 	override public function update(elapsed:Float) {
 		FlxEcho.update(elapsed); // Make sure to call `FlxEcho.update()` before `super.update()`!
 		super.update(elapsed);
-
-		#if FLX_KEYBOARD
-		if (FlxG.keys.anyJustReleased([Q])) {
-			var player1 = new Player();
-			player1.init(player.x, player.y - 100, 40, 20, FlxColor.ORANGE);
-			player1.body.rotation = player.body.rotation;
-			player1.add_to_group(movers);
-		}
-		#end
 	}
 }
