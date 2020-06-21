@@ -12,6 +12,7 @@ using utilities.FlxEcho;
 class Mover extends FlxSprite {
 	/// CONTROL FLAGS
 	var canMove:Bool = false;
+
 	public var direction(default, null):FlxVector;
 
 	/// MOVEMENT
@@ -51,9 +52,9 @@ class Mover extends FlxSprite {
 	}
 
 	override function update(elapsed:Float) {
-		handleMovement();
-
 		super.update(elapsed);
+		
+		handleMovement();
 	}
 
 	function handleMovement() {

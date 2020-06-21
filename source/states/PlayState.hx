@@ -81,7 +81,13 @@ class PlayState extends FlxState {
 			}
 		}
 
+		var follower = new Follower(0, 10, 4);
+		follower.init(player.x, player.y, 10, 8, FlxColor.YELLOW);
+		follower.add_to_group(movers);
+		follower.assignParent(player);
+
 		movers.listen(terrainTiles);
+		movers.listen(movers);
 
 		/// HUD
 		var hud = new HUD(player);

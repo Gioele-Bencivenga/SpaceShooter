@@ -17,15 +17,15 @@ class Player extends Mover {
 	}
 
 	override function init(_x:Float, _y:Float, _width:Int, _height:Int, _color:FlxColor, _canMove = true) {
-		pressPosition = FlxVector.get(1, 1);
-
 		super.init(_x, _y, _width, _height, _color);
+
+		pressPosition = FlxVector.get(1, 1);
 	}
 
 	override function update(elapsed:Float) {
-		handleInput();
-
 		super.update(elapsed);
+
+		handleInput();
 	}
 
 	function handleInput() {
