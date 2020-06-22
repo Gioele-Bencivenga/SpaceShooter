@@ -10,6 +10,10 @@ import flixel.FlxSprite;
 using utilities.FlxEcho;
 
 class Mover extends FlxSprite {
+	/// CONSTANTS
+	public static inline final MAX_VELOCITY = 500;
+	public static inline final MAX_ROTATIONAL_VELOCITY = 1000;
+
 	/// CONTROL FLAGS
 	var canMove:Bool = false;
 
@@ -39,12 +43,12 @@ class Mover extends FlxSprite {
 
 		/// MOVEMENT
 		canMove = _canMove;
-		thrust = 260;
-		rotationalThrust = 150;
+		thrust = 350;
+		rotationalThrust = 400;
 		direction = FlxVector.get(1, 1);
-		body.max_velocity_length = 1000;
-		body.max_rotational_velocity = 500;
-		body.rotational_drag = 150;
+		body.max_velocity_length = MAX_VELOCITY;
+		body.max_rotational_velocity = MAX_ROTATIONAL_VELOCITY;
+		body.rotational_drag = 20;
 
 		/// POSITION
 		body.x = _x;

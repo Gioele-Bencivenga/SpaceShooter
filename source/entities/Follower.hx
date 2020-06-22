@@ -1,5 +1,7 @@
 package entities;
 
+import utilities.FlxEcho;
+import echo.World;
 import flixel.math.FlxVector;
 import flixel.util.FlxTimer;
 import flixel.FlxG;
@@ -14,9 +16,9 @@ class Follower extends Mover {
 	var minDistanceFromPoint:Float;
 	var followSpeed:Float;
 
-	var desiredPoint:FlxPoint;
-
-	var desiredPointRefresher:FlxTimer;
+	var offsetX:Int;
+	var offsetY:Int;
+	var offsetsUpdater:FlxTimer;
 
 	public function new(_minDistanceFromPoint:Float, _maxDistanceFromPoint:Float, _followSpeed:Float) {
 		super();
@@ -29,13 +31,9 @@ class Follower extends Mover {
 	override function init(_x:Float, _y:Float, _width:Int, _height:Int, _color:FlxColor, _canMove = true) {
 		super.init(_x, _y, _width, _height, _color);
 
-		rotationalThrust = 20;
-		body.drag_length = 100;
-
-		desiredPoint = FlxVector.get(getMidpoint().x, getMidpoint().y);
-		desiredPointRefresher = new FlxTimer().start(1, function(_) {
-			updateDesiredPoint;
-		});
+		offsetsUpdater = new FlxTimer().start(5, function(_) {
+			updateOffsets();
+		}, 0);
 	}
 
 	override function update(elapsed:Float) {
@@ -46,32 +44,42 @@ class Follower extends Mover {
 
 	public function assignParent(_parent:Mover) {
 		parent = _parent;
-		updateDesiredPoint();
+		updateOffsets();
 	}
 
+	// I could keep this trype of follower as "Buzzer" and make it more excited tho;
 	private function followParent() {
 		if (parent != null) {
-			var distanceFromPoint = getMidpoint().distanceTo(parent.getMidpoint());
-			if (distanceFromPoint > maxDistanceFromPoint) {
-				direction.set((parent.getMidpoint().x - getMidpoint().x) + FlxG.random.int(-150, 150),
-					(parent.getMidpoint().y - getMidpoint().y) + FlxG.random.int(20, -300));
-				direction.length = distanceFromPoint * followSpeed * parent.direction.length / 100;
+			var desiredPoint = parent.getMidpoint().add(0, -150);
+			var distanceFromPoint = getMidpoint().distanceTo(desiredPoint);
+			desiredPoint.x += offsetX;
+			desiredPoint.y += offsetY;
 
-				// direction.set(getMidpoint().x, getMidpoint().y);
-				// direction.subtractPoint(parent.getMidpoint());
+			if (distanceFromPoint > maxDistanceFromPoint) {
+				direction.set(desiredPoint.x - getMidpoint().x, desiredPoint.y - getMidpoint().y);
+			} else if (distanceFromPoint < minDistanceFromPoint) {
+				direction.set(desiredPoint.x - getMidpoint().x, desiredPoint.y - getMidpoint().y);
+				direction.rotateByDegrees(180); // rotate by 180 desgrees the vector so it points opposite
 			}
+
+			direction.length = distanceFromPoint + followSpeed;
+			// if direction points in a cone above us then we go faster to counteract gravity
+			if (direction.degrees >= 20 && direction.degrees <= 160) {
+				direction.length *= 3;
+			}
+			if (direction.degrees >= -45 && direction.degrees <= -135) {
+				direction.rotateByDegrees(180);
+				direction.length /= 2;
+			}
+
+			body.acceleration.multiplyWith(distanceFromPoint / 20);
 		}
 	}
 
-	private function updateDesiredPoint() {
+	private function updateOffsets() {
 		if (parent != null) {
-			var offsetX = FlxG.random.int(-10, 10);
-			var offsetY = FlxG.random.int(-5, 20);
-			desiredPoint.set(parent.getMidpoint().x + offsetX, parent.getMidpoint().y + offsetY);
-		} else {
-			var offsetX = FlxG.random.int(-100, 100);
-			var offsetY = FlxG.random.int(-50, 200);
-			desiredPoint.set(getMidpoint().x + offsetX, getMidpoint().y + offsetY);
+			offsetX = FlxG.random.int(-30, 30);
+			offsetY = FlxG.random.int(-20, 30);
 		}
 	}
 }
