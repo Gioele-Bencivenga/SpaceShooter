@@ -31,6 +31,8 @@ class Follower extends Mover {
 	override function init(_x:Float, _y:Float, _width:Int, _height:Int, _color:FlxColor, _canMove = true) {
 		super.init(_x, _y, _width, _height, _color);
 
+		body.gravity_scale = 0;
+
 		offsetsUpdater = new FlxTimer().start(5, function(_) {
 			updateOffsets();
 		}, 0);
@@ -57,29 +59,32 @@ class Follower extends Mover {
 
 			if (distanceFromPoint > maxDistanceFromPoint) {
 				direction.set(desiredPoint.x - getMidpoint().x, desiredPoint.y - getMidpoint().y);
+				direction.length += 20;
 			} else if (distanceFromPoint < minDistanceFromPoint) {
 				direction.set(desiredPoint.x - getMidpoint().x, desiredPoint.y - getMidpoint().y);
 				direction.rotateByDegrees(180); // rotate by 180 desgrees the vector so it points opposite
+				direction.length += 50;
 			}
 
-			direction.length = distanceFromPoint + followSpeed;
+			direction.length += distanceFromPoint + followSpeed;
+
 			// if direction points in a cone above us then we go faster to counteract gravity
-			if (direction.degrees >= 20 && direction.degrees <= 160) {
+			/*if (direction.degrees >= 20 && direction.degrees <= 160) {
 				direction.length *= 3;
 			}
 			if (direction.degrees >= -45 && direction.degrees <= -135) {
 				direction.rotateByDegrees(180);
 				direction.length /= 2;
-			}
+			}*/
 
-			body.acceleration.multiplyWith(distanceFromPoint / 20);
+			body.acceleration.multiplyWith(distanceFromPoint / 10);
 		}
 	}
 
 	private function updateOffsets() {
 		if (parent != null) {
-			offsetX = FlxG.random.int(-30, 30);
-			offsetY = FlxG.random.int(-20, 30);
+			offsetX = FlxG.random.int(-100, 100);
+			offsetY = FlxG.random.int(-100, 100);
 		}
 	}
 }

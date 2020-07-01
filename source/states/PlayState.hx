@@ -103,7 +103,7 @@ class PlayState extends FlxState {
 			}
 		}
 
-		var follower = new Follower(0, 10, 40);
+		var follower = new Follower(20, 40, 40);
 		follower.init(player.body.x - 5, player.body.y - 5, 18, 8, FlxColor.YELLOW);
 		follower.add_to_group(movers);
 		follower.assignParent(player);
