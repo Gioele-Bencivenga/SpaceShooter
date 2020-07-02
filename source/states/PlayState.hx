@@ -14,6 +14,7 @@ using utilities.FlxEcho;
 
 class PlayState extends FlxState {
 	var movers:FlxGroup;
+	var followers:FlxGroup;
 	var terrainTiles:FlxGroup;
 
 	var player:Player;
@@ -74,6 +75,8 @@ class PlayState extends FlxState {
 		add(terrainTiles);
 		movers = new FlxGroup();
 		add(movers);
+		followers = new FlxGroup();
+		add(followers);
 
 		// First thing we want to do before creating any physics objects is init() our Echo world.
 		FlxEcho.init({
@@ -103,11 +106,13 @@ class PlayState extends FlxState {
 			}
 		}
 
-		var follower = new Follower(20, 40, 40);
+		var follower = new Follower(50, 100, 10);
 		follower.init(player.body.x - 5, player.body.y - 5, 18, 8, FlxColor.YELLOW);
-		follower.add_to_group(movers);
+		follower.add_to_group(followers);
 		follower.assignParent(player);
 
+		followers.listen(terrainTiles);
+		
 		movers.listen(terrainTiles);
 		movers.listen(movers);
 

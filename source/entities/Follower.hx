@@ -52,10 +52,10 @@ class Follower extends Mover {
 	// I could keep this trype of follower as "Buzzer" and make it more excited tho;
 	private function followParent() {
 		if (parent != null) {
-			var desiredPoint = parent.getMidpoint().add(0, -150);
+			var desiredPoint = parent.getMidpoint();
 			var distanceFromPoint = getMidpoint().distanceTo(desiredPoint);
-			desiredPoint.x += offsetX;
-			desiredPoint.y += offsetY;
+			//desiredPoint.x += offsetX;
+			//desiredPoint.y += offsetY;
 
 			if (distanceFromPoint > maxDistanceFromPoint) {
 				direction.set(desiredPoint.x - getMidpoint().x, desiredPoint.y - getMidpoint().y);
