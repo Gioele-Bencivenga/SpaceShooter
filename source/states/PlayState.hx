@@ -1,5 +1,6 @@
 package states;
 
+import haxe.ds.Vector;
 import flixel.FlxCamera.FlxCameraFollowStyle;
 import flixel.FlxG;
 import flixel.group.FlxGroup;
@@ -20,6 +21,7 @@ class PlayState extends FlxState {
 	var player:Player;
 
 	var debugLine:VectorDebugLine;
+	var follDebugLine:VectorDebugLine;
 
 	// temporary, this will have to go
 	var level_data = [
@@ -106,7 +108,7 @@ class PlayState extends FlxState {
 			}
 		}
 
-		var follower = new Follower(50, 100, 10);
+		var follower = new Follower(100, 250, 10);
 		follower.init(player.body.x - 5, player.body.y - 5, 18, 8, FlxColor.YELLOW);
 		follower.add_to_group(followers);
 		follower.assignParent(player);
@@ -124,8 +126,10 @@ class PlayState extends FlxState {
 		FlxG.camera.follow(player, FlxCameraFollowStyle.LOCKON);
 
 		/// DEBUG
-		debugLine = new VectorDebugLine(player);
+		debugLine = new VectorDebugLine(player, FlxColor.RED);
 		add(debugLine);
+		follDebugLine = new VectorDebugLine(follower, FlxColor.GRAY);
+		add(follDebugLine);
 
 		super.create();
 	}

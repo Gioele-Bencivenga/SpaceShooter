@@ -1,12 +1,7 @@
 package entities;
 
-import utilities.FlxEcho;
-import echo.World;
-import flixel.math.FlxVector;
 import flixel.util.FlxTimer;
 import flixel.FlxG;
-import flixel.math.FlxRandom;
-import flixel.math.FlxPoint;
 import flixel.util.FlxColor;
 
 class Follower extends Mover {
@@ -52,32 +47,34 @@ class Follower extends Mover {
 	// I could keep this trype of follower as "Buzzer" and make it more excited tho;
 	private function followParent() {
 		if (parent != null) {
-			var desiredPoint = parent.getMidpoint();
+			var desiredPoint = parent.getMidpoint() /*.add(0, -50)*/;
 			var distanceFromPoint = getMidpoint().distanceTo(desiredPoint);
-			//desiredPoint.x += offsetX;
-			//desiredPoint.y += offsetY;
+			// desiredPoint.x += offsetX;
+			// desiredPoint.y += offsetY;
 
 			if (distanceFromPoint > maxDistanceFromPoint) {
 				direction.set(desiredPoint.x - getMidpoint().x, desiredPoint.y - getMidpoint().y);
-				direction.length += 20;
 			} else if (distanceFromPoint < minDistanceFromPoint) {
 				direction.set(desiredPoint.x - getMidpoint().x, desiredPoint.y - getMidpoint().y);
 				direction.rotateByDegrees(180); // rotate by 180 desgrees the vector so it points opposite
 				direction.length += 50;
+			} else {
+				direction.set(parent.direction.x, parent.direction.y);
 			}
 
 			direction.length += distanceFromPoint + followSpeed;
 
 			// if direction points in a cone above us then we go faster to counteract gravity
 			/*if (direction.degrees >= 20 && direction.degrees <= 160) {
-				direction.length *= 3;
-			}
-			if (direction.degrees >= -45 && direction.degrees <= -135) {
-				direction.rotateByDegrees(180);
-				direction.length /= 2;
+					direction.length *= 3;
+				}
+				if (direction.degrees >= -45 && direction.degrees <= -135) {
+					direction.rotateByDegrees(180);
+					direction.length /= 2;
 			}*/
 
-			body.acceleration.multiplyWith(distanceFromPoint / 10);
+			// body.acceleration.multiplyWith(distanceFromPoint / 10);
+			// body.velocity.multiplyWith(distanceFromPoint);
 		}
 	}
 

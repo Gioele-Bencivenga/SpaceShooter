@@ -1,23 +1,22 @@
 package utilities;
 
 import flixel.util.FlxColor;
-import entities.Player;
+import entities.Mover;
 import flixel.FlxSprite;
 
 class VectorDebugLine extends FlxSprite {
-	var playerRef:Player;
+	var moverRef:Mover;
 
-	public function new(_playerRef:Player) {
+	public function new(_moverRef:Mover, _color:FlxColor) {
 		super();
-		playerRef = _playerRef;
+		moverRef = _moverRef;
+		color = _color;
 	}
 
 	override function update(elapsed:Float) {
 		super.update(elapsed);
-        makeGraphic(2, Std.int(playerRef.direction.length), FlxColor.RED).setPosition(playerRef.getMidpoint().x, playerRef.getMidpoint().y);
-        //makeGraphic(Std.int(playerRef.direction.length), 2, FlxColor.RED).setPosition(playerRef.getMidpoint().x, playerRef.getMidpoint().y);
-        angle = playerRef.direction.degrees;
-
-        // feel like I'm close and missing the last step to get it working
-    }
+		makeGraphic(Std.int(moverRef.direction.length), 1, color).setPosition(moverRef.getMidpoint().x, moverRef.getMidpoint().y);
+		origin.x = 0;
+		angle = moverRef.direction.degrees;
+	}
 }
