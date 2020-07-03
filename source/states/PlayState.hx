@@ -99,7 +99,7 @@ class PlayState extends FlxState {
 
 					case 3:
 						player = new Player();
-						player.init(i * 16, j * 16, 20, 10, FlxColor.ORANGE);
+						player.init(i * 16, j * 16, 40, 20, FlxColor.ORANGE);
 						player.add_to_group(movers);
 
 					default:
@@ -108,7 +108,14 @@ class PlayState extends FlxState {
 			}
 		}
 
-		var follower = new Follower(100, 250, 10);
+		for(i in 0...6) {
+			var follower = new Follower(FlxG.random.int(20, 200), FlxG.random.int(100, 250), FlxG.random.int(10, 200));
+			follower.init(player.body.x - 5, player.body.y - 5, 18, 8, FlxColor.GREEN);
+			follower.add_to_group(followers);
+			follower.assignParent(player);
+		}
+
+		var follower = new Follower(150, 200, 50);
 		follower.init(player.body.x - 5, player.body.y - 5, 18, 8, FlxColor.YELLOW);
 		follower.add_to_group(followers);
 		follower.assignParent(player);
@@ -127,9 +134,9 @@ class PlayState extends FlxState {
 
 		/// DEBUG
 		debugLine = new VectorDebugLine(player, FlxColor.RED);
-		add(debugLine);
-		follDebugLine = new VectorDebugLine(follower, FlxColor.GRAY);
-		add(follDebugLine);
+		//add(debugLine);
+		//follDebugLine = new VectorDebugLine(follower, FlxColor.GRAY);
+		//add(follDebugLine);
 
 		super.create();
 	}

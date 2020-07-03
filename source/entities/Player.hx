@@ -19,6 +19,9 @@ class Player extends Mover {
 	override function init(_x:Float, _y:Float, _width:Int, _height:Int, _color:FlxColor, _canMove = true) {
 		super.init(_x, _y, _width, _height, _color);
 
+		//loadGraphic("assets/images/characters/ship/straight.png", true, 16, 26);
+		//setGraphicSize(Std.int(width), Std.int(height));
+
 		pressPosition = FlxVector.get(1, 1);
 	}
 

@@ -15,8 +15,11 @@ class VectorDebugLine extends FlxSprite {
 
 	override function update(elapsed:Float) {
 		super.update(elapsed);
-		makeGraphic(Std.int(moverRef.direction.length), 1, color).setPosition(moverRef.getMidpoint().x, moverRef.getMidpoint().y);
-		origin.x = 0;
-		angle = moverRef.direction.degrees;
+
+		if (moverRef.direction.length > 0) {
+			makeGraphic(Std.int(moverRef.direction.length), 1, color).setPosition(moverRef.getMidpoint().x, moverRef.getMidpoint().y);
+			origin.x = 0;
+			angle = moverRef.direction.degrees;
+		}
 	}
 }
