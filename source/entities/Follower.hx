@@ -26,7 +26,7 @@ class Follower extends Mover {
 	override function init(_x:Float, _y:Float, _width:Int, _height:Int, _color:FlxColor, _canMove = true) {
 		super.init(_x, _y, _width, _height, _color);
 
-		body.gravity_scale = 0;
+		body.gravity_scale = 0.3;
 		body.drag_length = 50;
 
 		offsetsUpdater = new FlxTimer().start(5, function(_) {
@@ -48,7 +48,7 @@ class Follower extends Mover {
 	// I could keep this trype of follower as "Buzzer" and make it more excited tho;
 	private function followParent() {
 		if (parent != null) {
-			var desiredPoint = parent.getMidpoint().add(0, -100);
+			var desiredPoint = parent.getMidpoint().add(0, -60);
 			var distanceFromPoint = getMidpoint().distanceTo(desiredPoint);
 			desiredPoint.x += offsetX;
 			desiredPoint.y += offsetY;
