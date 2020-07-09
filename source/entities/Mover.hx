@@ -12,7 +12,7 @@ using utilities.FlxEcho;
 class Mover extends FlxSprite {
 	/// CONSTANTS
 	public static inline final MAX_VELOCITY = 500;
-	public static inline final MAX_ROTATIONAL_VELOCITY = 1000;
+	public static inline final MAX_ROTATIONAL_VELOCITY = 1500;
 
 	/// CONTROL FLAGS
 	var canMove:Bool = false;
@@ -31,7 +31,7 @@ class Mover extends FlxSprite {
 	}
 
 	public function init(_x:Float, _y:Float, _width:Int, _height:Int, _color:FlxColor, _canMove = true) {
-		width = _width; // setting the FlxObject's properties is needed unless you specify the body's dimnesions when creating it
+		width = _width; // setting the FlxObject's properties is needed unless you specify the body's dimensions when creating it
 		height = _height;
 
 		/// GRAPHIC
@@ -43,8 +43,8 @@ class Mover extends FlxSprite {
 
 		/// MOVEMENT
 		canMove = _canMove;
-		thrust = 350;
-		rotationalThrust = 400;
+		thrust = 400;
+		rotationalThrust = 500;
 		direction = FlxVector.get(1, 1);
 		body.max_velocity_length = MAX_VELOCITY;
 		body.max_rotational_velocity = MAX_ROTATIONAL_VELOCITY;
@@ -66,6 +66,7 @@ class Mover extends FlxSprite {
 			var rotationVect = FlxVector.get(1, 1);
 			rotationVect.degrees = body.rotation;
 
+			// should we rotate left or right towards the mouse?
 			if (rotationVect.crossProductLength(direction) > 0) {
 				body.rotational_velocity = rotationalThrust;
 			} else if (rotationVect.crossProductLength(direction) < 0) {

@@ -99,7 +99,7 @@ class PlayState extends FlxState {
 
 					case 3:
 						player = new Player();
-						player.init(i * 16, j * 16, 40, 20, FlxColor.ORANGE);
+						player.init(i * 16, j * 16, 35, 10, FlxColor.ORANGE);
 						player.add_to_group(movers);
 
 					default:
@@ -134,9 +134,9 @@ class PlayState extends FlxState {
 
 		/// DEBUG
 		debugLine = new VectorDebugLine(player, FlxColor.RED);
-		//add(debugLine);
-		//follDebugLine = new VectorDebugLine(follower, FlxColor.GRAY);
-		//add(follDebugLine);
+		add(debugLine);
+		follDebugLine = new VectorDebugLine(follower, FlxColor.GRAY);
+		add(follDebugLine);
 
 		super.create();
 	}

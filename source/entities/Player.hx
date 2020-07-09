@@ -19,8 +19,8 @@ class Player extends Mover {
 	override function init(_x:Float, _y:Float, _width:Int, _height:Int, _color:FlxColor, _canMove = true) {
 		super.init(_x, _y, _width, _height, _color);
 
-		//loadGraphic("assets/images/characters/ship/straight.png", true, 16, 26);
-		//setGraphicSize(Std.int(width), Std.int(height));
+		// loadGraphic("assets/images/characters/ship/straight.png", true, 16, 26);
+		// setGraphicSize(Std.int(width), Std.int(height));
 
 		pressPosition = FlxVector.get(1, 1);
 	}
@@ -35,9 +35,8 @@ class Player extends Mover {
 		#if FLX_KEYBOARD
 		if (FlxG.mouse.pressed) {
 			pressPosition.set(FlxG.mouse.x, FlxG.mouse.y);
-
-			direction.set(getPosition().x, getPosition().y);
-			direction.subtractPoint(pressPosition);
+		} else {
+			pressPosition.set(x, y);
 		}
 		#else
 		// this doesn't work properly and I don't know why
@@ -46,5 +45,8 @@ class Player extends Mover {
 			pressPosition.set(touchInput.getScreenPosition().x, touchInput.getScreenPosition().y);
 		}
 		#end
+
+		direction.set(getPosition().x, getPosition().y);
+		direction.subtractPoint(pressPosition);
 	}
 }
