@@ -1,5 +1,7 @@
 package entities;
 
+import flixel.math.FlxMath;
+import hxmath.math.Vector2;
 import flixel.math.FlxPoint;
 import flixel.math.FlxVector;
 import flixel.input.touch.FlxTouchManager;

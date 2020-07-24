@@ -15,7 +15,7 @@ class Tile extends FlxSprite {
 	}
 
 	public function init(_x:Float, _y:Float, _width:Int, _height:Int) {
-		width = _width; // setting the FlxObject's properties is needed unless you specify the body's dimnesions when creating it
+		width = _width; // setting the FlxObject's properties is needed unless you specify the body's dimensions when creating it
 		height = _height;
 
 		/// GRAPHIC

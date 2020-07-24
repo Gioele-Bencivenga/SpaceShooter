@@ -20,7 +20,7 @@ class Mover extends FlxSprite {
 	public var direction(default, null):FlxVector;
 
 	/// MOVEMENT
-	var thrust:Int;
+	var maxThrust:Int;
 	var rotationalThrust:Int;
 
 	/// BODY
@@ -43,7 +43,7 @@ class Mover extends FlxSprite {
 
 		/// MOVEMENT
 		canMove = _canMove;
-		thrust = 400;
+		maxThrust = 400;
 		rotationalThrust = 500;
 		direction = FlxVector.get(1, 1);
 		body.max_velocity_length = MAX_VELOCITY;
@@ -57,7 +57,7 @@ class Mover extends FlxSprite {
 
 	override function update(elapsed:Float) {
 		super.update(elapsed);
-		
+
 		handleMovement();
 	}
 
@@ -68,9 +68,9 @@ class Mover extends FlxSprite {
 
 			// should we rotate left or right towards the mouse?
 			if (rotationVect.crossProductLength(direction) > 0) {
-				body.rotational_velocity = rotationalThrust;
+				body.rotational_velocity = (rotationalThrust / 4);
 			} else if (rotationVect.crossProductLength(direction) < 0) {
-				body.rotational_velocity = -rotationalThrust;
+				body.rotational_velocity = -(rotationalThrust / 4);
 			} else {
 				body.rotational_velocity = 0;
 			}
