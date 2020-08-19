@@ -44,9 +44,9 @@ class PlayState extends FlxState {
 		followers = new FlxGroup();
 		add(followers);
 
-		/// TILEMAP
+		/// TILEMAP AND LAYERS
 		map = new FlxOgmo3Loader('assets/data/ogmo/The-Pit.ogmo', 'assets/data/ogmo/firstMap.json');
-		collisionLayer = map.loadTilemap('assets/data/tileset/tiles.pgn', 'collisions');
+		collisionLayer = map.loadTilemap('assets/data/tilesets/tiles.png', 'collisions');
 		add(collisionLayer);
 
 		// First thing we want to do before creating any physics objects is init() our Echo world.
@@ -56,44 +56,19 @@ class PlayState extends FlxState {
 			gravity_y: 200
 		});
 
-		var tilemap = TileMap.generate(collisionLayer.getData(true), 16, 16, collisionLayer.widthInTiles, collisionLayer.heightInTiles, 0, 0, 2);
-
+		var tilemap = TileMap.generate(collisionLayer.getData(/*true*/), 16, 16, collisionLayer.widthInTiles, collisionLayer.heightInTiles, 0, 0, 2);
 		for (t in tilemap) {
 			var tile = new Tile();
-			tile.init(t.x, t.y, 16, 16);
+			var tileBounds = t.bounds(); // since the generated bodies are optimized we need to pass their actual width and heigh
+			tile.init(t.x, t.y, tileBounds.width, tileBounds.height);
+			tile.set_body(t); // set the tile's body to the generated body
 			tile.add_to_group(terrainTiles);
+			tileBounds.put(); // don't know what this does but thanks @austineast
 		}
 
 		player = new Player();
 		player.init(16, 16, 35, 10, FlxColor.ORANGE);
 		player.add_to_group(movers);
-
-		/*for (t in collisionLayer.getTileInstances(2)) {
-			var tileData = collisionLayer.getTileCoordsByIndex(t);
-			var tile = new Tile();
-			tile.init(tileData.x, tileData.y, 16, 16);
-		}*/
-
-		// We'll step through our level data and add objects that way
-		/*for (j in 0...level_data.length) {
-			for (i in 0...level_data[j].length) {
-				switch (level_data[j][i]) {
-					case 1:
-						// Just a regular old terrain block
-						var tile = new Tile();
-						tile.init(i * 16, j * 16, 16, 16);
-						tile.add_to_group(terrainTiles);
-
-					case 3:
-						player = new Player();
-						player.init(i * 16, j * 16, 35, 10, FlxColor.ORANGE);
-						player.add_to_group(movers);
-
-					default:
-						continue;
-				}
-			}
-		}*/
 
 		for (i in 0...6) {
 			var follower = new Follower(FlxG.random.int(20, 200), FlxG.random.int(100, 250), FlxG.random.int(10, 200));
@@ -107,8 +82,8 @@ class PlayState extends FlxState {
 		follower.add_to_group(followers);
 		follower.assignParent(player);
 
+		/// COLLISIONS
 		followers.listen(terrainTiles);
-
 		movers.listen(terrainTiles);
 		movers.listen(movers);
 

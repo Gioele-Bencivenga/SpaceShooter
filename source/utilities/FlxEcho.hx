@@ -54,6 +54,17 @@ class FlxEcho {
 	}
 
 	/**
+	 * sets body to object??
+	 *
+	 * @param object the object to which the body sould be set
+	 * @param body the body to add to the object
+	 */
+	public static function set_body(object:FlxObject, body:Body) {
+		bodies.set(object, body);
+		world.add(body);
+	}
+
+	/**
 	 * Adds FlxObject to FlxGroup, and the FlxObject's associated physics body to the FlxGroup's associated physics group
 	 */
 	public static function add_to_group(object:FlxObject, group:FlxGroup) {
