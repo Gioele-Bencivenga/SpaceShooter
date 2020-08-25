@@ -75,7 +75,9 @@ class Mover extends FlxSprite {
 				body.rotational_velocity = 0;
 			}
 
-			body.acceleration.set(direction.x, direction.y);
+			// trying to make the mover only move towards his front, then rotate following the mouse
+			var actualDir = Vector2.fromPolar((Math.PI / 180) * rotationVect.degrees, direction.length * 2);
+			body.acceleration.set(actualDir.x, actualDir.y);
 		}
 	}
 }
