@@ -18,7 +18,7 @@ class Player extends Mover {
 		super();
 	}
 
-	override function init(_x:Float, _y:Float, _width:Int, _height:Int, _color:FlxColor, _canMove = true) {
+	override function init(_x:Float, _y:Float, _width:Int, _height:Int, _color:FlxColor) {
 		super.init(_x, _y, _width, _height, _color);
 
 		// loadGraphic("assets/images/characters/ship/straight.png", true, 16, 26);

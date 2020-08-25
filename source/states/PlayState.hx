@@ -61,8 +61,7 @@ class PlayState extends FlxState {
 		var tilemap = TileMap.generate(collisionLayer.getData(/*true*/), 16, 16, collisionLayer.widthInTiles, collisionLayer.heightInTiles, 0, 0, 1);
 		for (t in tilemap) {
 			var tile = new Tile();
-			var tileBounds = t.bounds(); // since the generated bodies are optimized we need to pass their actual width and heigh
-			tile.init(t.x, t.y, tileBounds.width, tileBounds.height);
+			var tileBounds = t.bounds(); // since the generated bodies are optimized we need to pass their actual width and height
 			tile.set_body(t); // set the tile's body to the generated body
 			tile.add_to_group(terrainTiles);
 			tileBounds.put(); // put the bounds AABB back in the pool
@@ -72,15 +71,15 @@ class PlayState extends FlxState {
 		player.init(16, 16, 35, 10, FlxColor.ORANGE);
 		player.add_to_group(movers);
 
-		for (i in 0...6) {
-			var follower = new Follower(FlxG.random.int(20, 200), FlxG.random.int(100, 250), FlxG.random.int(10, 200));
-			follower.init(player.body.x - 5, player.body.y - 5, 18, 8, FlxColor.GREEN);
+		for (i in 0...3) {
+			var follower = new Follower(FlxG.random.int(0, 300));
+			follower.init(player.body.x - 5, player.body.y - 5, 15, 15, FlxColor.RED);
 			follower.add_to_group(followers);
 			follower.assignParent(player);
 		}
 
-		var follower = new Follower(150, 200, 50);
-		follower.init(player.body.x - 5, player.body.y - 5, 18, 8, FlxColor.YELLOW);
+		var follower = new Follower(100);
+		follower.init(player.body.x - 5, player.body.y - 5, 20, 20, FlxColor.YELLOW);
 		follower.add_to_group(followers);
 		follower.assignParent(player);
 
@@ -97,8 +96,6 @@ class PlayState extends FlxState {
 		FlxG.camera.follow(player, FlxCameraFollowStyle.LOCKON);
 
 		/// DEBUG
-		debugLine = new VectorDebugLine(player, FlxColor.RED);
-		add(debugLine);
 		follDebugLine = new VectorDebugLine(follower, FlxColor.GRAY);
 		add(follDebugLine);
 

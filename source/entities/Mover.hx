@@ -30,7 +30,7 @@ class Mover extends FlxSprite {
 		super();
 	}
 
-	public function init(_x:Float, _y:Float, _width:Int, _height:Int, _color:FlxColor, _canMove = true) {
+	public function init(_x:Float, _y:Float, _width:Int, _height:Int, _color:FlxColor) {
 		width = _width; // setting the FlxObject's properties is needed unless you specify the body's dimensions when creating it
 		height = _height;
 
@@ -42,9 +42,9 @@ class Mover extends FlxSprite {
 		body = this.get_body();
 
 		/// MOVEMENT
-		canMove = _canMove;
+		canMove = true;
 		maxThrust = 400;
-		rotationalThrust = 500;
+		rotationalThrust = 200;
 		direction = FlxVector.get(1, 1);
 		body.max_velocity_length = MAX_VELOCITY;
 		body.max_rotational_velocity = MAX_ROTATIONAL_VELOCITY;
@@ -68,15 +68,15 @@ class Mover extends FlxSprite {
 
 			// should we rotate left or right towards the mouse?
 			if (rotationVect.crossProductLength(direction) > 0) {
-				body.rotational_velocity = (rotationalThrust / 4);
+				body.rotational_velocity = rotationalThrust;
 			} else if (rotationVect.crossProductLength(direction) < 0) {
-				body.rotational_velocity = -(rotationalThrust / 4);
+				body.rotational_velocity = -rotationalThrust;
 			} else {
 				body.rotational_velocity = 0;
 			}
 
 			// trying to make the mover only move towards his front, then rotate following the mouse
-			var actualDir = Vector2.fromPolar((Math.PI / 180) * rotationVect.degrees, direction.length * 2);
+			var actualDir = Vector2.fromPolar((Math.PI / 180) * body.rotation, direction.length * 1.4);
 			body.acceleration.set(actualDir.x, actualDir.y);
 		}
 	}
