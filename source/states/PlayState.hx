@@ -38,32 +38,34 @@ class PlayState extends FlxState {
 	override public function create() {
 		/// GROUPS
 		terrainTiles = new FlxGroup();
-		add(terrainTiles);
 		movers = new FlxGroup();
-		add(movers);
 		followers = new FlxGroup();
-		add(followers);
 
 		/// TILEMAP AND LAYERS
 		map = new FlxOgmo3Loader('assets/data/ogmo/The-Pit.ogmo', 'assets/data/ogmo/firstMap.json');
 		collisionLayer = map.loadTilemap('assets/data/tilesets/tiles.png', 'collisions');
+
+		// Add groups with the correct rendering order
 		add(collisionLayer);
+		add(terrainTiles);
+		add(followers);
+		add(movers);
 
 		// First thing we want to do before creating any physics objects is init() our Echo world.
 		FlxEcho.init({
-			width: collisionLayer.widthInTiles, // Make the size of your Echo world equal the size of your play field
-			height: collisionLayer.heightInTiles,
+			width: collisionLayer.width, // Make the size of your Echo world equal the size of your play field
+			height: collisionLayer.height,
 			gravity_y: 200
 		});
 
-		var tilemap = TileMap.generate(collisionLayer.getData(/*true*/), 16, 16, collisionLayer.widthInTiles, collisionLayer.heightInTiles, 0, 0, 2);
+		var tilemap = TileMap.generate(collisionLayer.getData(/*true*/), 16, 16, collisionLayer.widthInTiles, collisionLayer.heightInTiles, 0, 0, 1);
 		for (t in tilemap) {
 			var tile = new Tile();
 			var tileBounds = t.bounds(); // since the generated bodies are optimized we need to pass their actual width and heigh
 			tile.init(t.x, t.y, tileBounds.width, tileBounds.height);
 			tile.set_body(t); // set the tile's body to the generated body
 			tile.add_to_group(terrainTiles);
-			tileBounds.put(); // don't know what this does but thanks @austineast
+			tileBounds.put(); // put the bounds AABB back in the pool
 		}
 
 		player = new Player();
