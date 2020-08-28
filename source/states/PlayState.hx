@@ -1,6 +1,5 @@
 package states;
 
-import echo.World;
 import echo.util.TileMap;
 import flixel.tile.FlxTilemap;
 import flixel.addons.editors.ogmo.FlxOgmo3Loader;
@@ -29,6 +28,8 @@ class PlayState extends FlxState {
 	public static var movers:FlxGroup;
 	public static var followers:FlxGroup;
 	public static var terrainTiles:FlxGroup;
+	public static var particles:FlxGroup;
+	public static var emitters:FlxGroup;
 
 	var player:Player;
 
@@ -40,6 +41,8 @@ class PlayState extends FlxState {
 		terrainTiles = new FlxGroup();
 		movers = new FlxGroup();
 		followers = new FlxGroup();
+		particles = new FlxGroup();
+		emitters = new FlxGroup();
 
 		/// TILEMAP AND LAYERS
 		map = new FlxOgmo3Loader('assets/data/ogmo/The-Pit.ogmo', 'assets/data/ogmo/firstMap.json');
@@ -49,6 +52,7 @@ class PlayState extends FlxState {
 		add(collisionLayer);
 		add(terrainTiles);
 		add(followers);
+		add(particles);
 		add(movers);
 
 		// First thing we want to do before creating any physics objects is init() our Echo world.
@@ -76,6 +80,13 @@ class PlayState extends FlxState {
 			follower.init(player.body.x - 5, player.body.y - 5, 15, 15, FlxColor.RED);
 			follower.add_to_group(followers);
 			follower.assignParent(player);
+		}
+
+		for (i in 0...3) {
+			var missile = new Missile();
+			missile.init(player.body.x + 200, player.body.y + 100, 20, 10, FlxColor.PINK);
+			missile.assignTarget(player);
+			missile.add_to_group(movers);
 		}
 
 		var follower = new Follower(100);

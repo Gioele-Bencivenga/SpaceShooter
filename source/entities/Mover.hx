@@ -11,8 +11,8 @@ using utilities.FlxEcho;
 
 class Mover extends FlxSprite {
 	/// CONSTANTS
-	public static inline final MAX_VELOCITY = 500;
-	public static inline final MAX_ROTATIONAL_VELOCITY = 1500;
+	public static inline final MAX_VELOCITY = 350;
+	public static inline final MAX_ROTATIONAL_VELOCITY = 1000;
 
 	/// CONTROL FLAGS
 	var canMove:Bool = false;

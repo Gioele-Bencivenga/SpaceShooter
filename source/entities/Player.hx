@@ -1,18 +1,20 @@
 package entities;
 
-import flixel.math.FlxMath;
-import hxmath.math.Vector2;
 import flixel.math.FlxPoint;
+import utilities.Particle.FireOptions;
 import flixel.math.FlxVector;
-import flixel.input.touch.FlxTouchManager;
-import flixel.input.touch.FlxTouch;
-import flixel.ui.FlxVirtualPad;
 import flixel.util.FlxColor;
 import flixel.FlxG;
+import utilities.EchoEmitter;
+
+using utilities.FlxEcho;
 
 class Player extends Mover {
-	/// CONTROL FLAGS
-	var pressPosition:FlxVector;
+	/// CONTROLS
+	var pressPosition:FlxVector; // where the user is pressing on the screen
+
+	/// EMITTERS
+	public var thrustEmitter(default, null):EchoEmitter; // emitter for the thruster
 
 	public function new() {
 		super();
@@ -21,7 +23,12 @@ class Player extends Mover {
 	override function init(_x:Float, _y:Float, _width:Int, _height:Int, _color:FlxColor) {
 		super.init(_x, _y, _width, _height, _color);
 
+		thrustEmitter = new EchoEmitter(() -> {
+			new EchoParticle();
+		});
+
 		// loadGraphic("assets/images/characters/ship/straight.png", true, 16, 26);
+
 		// setGraphicSize(Std.int(width), Std.int(height));
 
 		pressPosition = FlxVector.get(1, 1);
@@ -50,5 +57,7 @@ class Player extends Mover {
 
 		direction.set(getPosition().x, getPosition().y);
 		direction.subtractPoint(pressPosition);
+
+		thrustEmitter.fire({position: getMidpoint(), util_color: FlxColor.RED, util_amount: 5});
 	}
 }

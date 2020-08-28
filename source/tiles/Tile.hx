@@ -12,5 +12,7 @@ class Tile extends FlxSprite {
 
 	public function new() {
 		super();
+
+		makeGraphic(1, 1, FlxColor.TRANSPARENT);
 	}
 }

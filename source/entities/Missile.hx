@@ -1,5 +1,7 @@
 package entities;
 
+import flixel.math.FlxVector;
+import flixel.FlxG;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 
@@ -15,35 +17,47 @@ class Missile extends Mover {
 	var offsetsUpdater:FlxTimer; // timer that updates the offsets
 
 	override function init(_x:Float, _y:Float, _width:Int, _height:Int, _color:FlxColor) {
-        super.init(_x, _y, _width, _height, _color);
-    }
+		super.init(_x, _y, _width, _height, _color);
 
-	private function followTarget() {}
+		maxThrust = 250;
+		rotationalThrust = 50;
 
-    /*
-	override private function followParent() {
-		if (parent != null) {
-			var desiredPoint = parent.getMidpoint().add(0, -50);
-			var distanceFromPoint = getMidpoint().distanceTo(desiredPoint);
+		body.gravity_scale = 0.5;
+
+		minOffsetX = minOffsetY = -70;
+		maxOffsetX = maxOffsetY = 70;
+		offsetsUpdater = new FlxTimer().start(3, function(_) {
+			updateOffsets();
+		}, 0);
+	}
+
+	private function updateOffsets() {
+		if (target != null) {
+			offsetX = FlxG.random.int(minOffsetX, maxOffsetX);
+			offsetY = FlxG.random.int(minOffsetY, maxOffsetY);
+		}
+	}
+
+	public function assignTarget(_target:Mover) {
+		target = _target;
+		updateOffsets();
+	}
+
+	private function followTarget() {
+		if (target != null) {
+			var desiredPoint = target.getMidpoint();
 			desiredPoint.x += offsetX;
 			desiredPoint.y += offsetY;
 
-			if (distanceFromPoint > maxDistanceFromPoint) {
-				direction.set(desiredPoint.x - getMidpoint().x, desiredPoint.y - getMidpoint().y);
-			} else if (distanceFromPoint < minDistanceFromPoint) {
-				direction.set(desiredPoint.x - getMidpoint().x, desiredPoint.y - getMidpoint().y);
-				direction.rotateByDegrees(180); // rotate by 180 desgrees the vector so it points opposite
-				direction.length += 50;
-			} else {
-				direction.length = 0;
-			}
+			direction.set(desiredPoint.x - getMidpoint().x, desiredPoint.y - getMidpoint().y);
 
-			if (distanceFromPoint < maxDistanceFromPoint) {
-				body.velocity.clamp(10, 300);
-			}
-
-			direction.length += followSpeed;
+			direction.length = maxThrust;
 		}
-    }
-    */
+	}
+
+	override function update(elapsed:Float) {
+		super.update(elapsed);
+
+		followTarget();
+	}
 }
