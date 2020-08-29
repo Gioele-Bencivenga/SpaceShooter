@@ -38,7 +38,7 @@ class EchoEmitter extends FlxTypedGroup<Particle> {
 	 */
 	public function fire(options:FireOptions) {
 		while (getFirstAvailable() == null) {
-			new_particle().add_to_group(PlayState.particles);
+			new_particle().add_to_group(cast this);
 		}
 
 		getFirstAvailable().fire(options);
