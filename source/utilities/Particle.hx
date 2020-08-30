@@ -23,12 +23,6 @@ class Particle extends FlxSprite {
 	public function fire(options:FireOptions) {
 		reset(options.position.x, options.position.y);
 
-		if (options.acceleration != null)
-			acceleration.copyFrom(options.acceleration);
-
-		if (options.velocity != null)
-			velocity.copyFrom(options.velocity);
-
 		if (options.animation != null)
 			animation.play(options.animation, true);
 	}
