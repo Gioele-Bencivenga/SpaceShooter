@@ -52,14 +52,11 @@ class Player extends Mover {
 		direction.set(getPosition().x, getPosition().y);
 		direction.subtractPoint(pressPosition);
 
-		// doesn't quite work
 		PlayState.emitter.fire({
 			position: getMidpoint(),
 			util_color: FlxColor.RED,
 			util_amount: 1,
-			velocity: FlxPoint.weak(10, 10)
+			lifespan: 1
 		});
-		// doens't work any better
-		// PlayState.emitter.fire({position: FlxPoint.weak(body.x, body.y), util_color: FlxColor.RED, util_amount: 1});
 	}
 }

@@ -28,13 +28,13 @@ class Particle extends FlxSprite {
 	}
 }
 
-// no clue if I'm using this the right way, never dealt with typedefs
 typedef FireOptions = {
 	position:FlxPoint,
 
 	?velocity:FlxPoint,
 	?acceleration:FlxPoint,
 	?animation:String,
+	?lifespan:Float,
 	?util_amount:Float,
 	?util_color:Int,
 	?util_int:Int,
