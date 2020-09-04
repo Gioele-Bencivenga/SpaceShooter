@@ -1,8 +1,9 @@
 package entities;
 
+import hxmath.math.Vector2;
 import states.PlayState;
 import flixel.math.FlxPoint;
-import utilities.Particle.FireOptions;
+import entities.EchoParticle.FireOptions;
 import flixel.math.FlxVector;
 import flixel.util.FlxColor;
 import flixel.FlxG;
@@ -53,10 +54,11 @@ class Player extends Mover {
 		direction.subtractPoint(pressPosition);
 
 		PlayState.emitter.fire({
-			position: getMidpoint(),
+			position: body.get_position(),
 			util_color: FlxColor.RED,
 			util_amount: 1,
-			lifespan: 1
+			lifespan: 0.5,
+			velocity: Vector2.fromPolar((Math.PI / 180) * (body.rotation + 180), body.velocity.length + direction.length)
 		});
 	}
 }

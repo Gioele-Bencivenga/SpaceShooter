@@ -1,13 +1,15 @@
 package entities;
 
-import utilities.Particle;
+import hxmath.math.Vector2;
+import flixel.FlxSprite;
 
 using utilities.FlxEcho;
 
 /**
- * Particle class inspired by FlxParticle with added Echo body and related logic
+ * Particle class inspired by FlxParticle and modified in order to have an easier
+ * integration with austineast's Echo physics library
  */
-class EchoParticle extends Particle {
+class EchoParticle extends FlxSprite {
 	/**
 	 * How long this particle lives before it disappears. Set to `0` to never `kill()` the particle automatically.
 	 * NOTE: this is a maximum, not a minimum; the object could get recycled before its `lifespan` is up.
@@ -27,13 +29,17 @@ class EchoParticle extends Particle {
 
 	public function new() {
 		super();
+		exists = false;
 
 		this.add_body();
 		this.get_body().gravity_scale = 0;
 	}
 
-	override function fire(options:FireOptions) {
-		super.fire(options);
+	public function fire(options:FireOptions) {
+		reset(options.position.x, options.position.y);
+
+		if (options.animation != null)
+			animation.play(options.animation, true);
 
 		if (options.position != null)
 			this.get_body().set_position(options.position.x, options.position.y);
@@ -65,4 +71,17 @@ class EchoParticle extends Particle {
 
 		// visible = true; // will I need this? maybe, so it's here just in case
 	}
+}
+
+typedef FireOptions = {
+	position:Vector2,
+
+	?velocity:Vector2,
+	?acceleration:Vector2,
+	?animation:String,
+	?lifespan:Float,
+	?util_amount:Float,
+	?util_color:Int,
+	?util_int:Int,
+	?util_bool:Bool
 }

@@ -1,5 +1,7 @@
 package entities;
 
+import hxmath.math.Vector2;
+import states.PlayState;
 import flixel.math.FlxVector;
 import flixel.FlxG;
 import flixel.util.FlxColor;
@@ -59,5 +61,13 @@ class Missile extends Mover {
 		super.update(elapsed);
 
 		followTarget();
+
+		PlayState.emitter.fire({
+			position: body.get_position(),
+			util_color: FlxColor.RED,
+			util_amount: 1,
+			lifespan: 0.1,
+			velocity: Vector2.fromPolar((Math.PI / 180) * (body.rotation + 180), body.velocity.length + direction.length)
+		});
 	}
 }

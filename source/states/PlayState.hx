@@ -93,21 +93,20 @@ class PlayState extends FlxState {
 		follower.add_to_group(followers);
 		follower.assignParent(player);
 
-		/// COLLISIONS
-		followers.listen(terrainTiles);
-		movers.listen(terrainTiles);
-		movers.listen(movers);
-
 		/// EMITTERS
 		emitter = new EchoEmitter(() -> {
 			new EchoParticle();
 		});
 		add(emitter);
-		
+
+		/// COLLISIONS
+		followers.listen(terrainTiles);
+		movers.listen(terrainTiles);
+		movers.listen(movers);
+
 		/// HUD
 		var hud = new HUD(player);
 		add(hud);
-
 
 		/// CAMERA SETUP
 		FlxG.camera.follow(player, FlxCameraFollowStyle.LOCKON);

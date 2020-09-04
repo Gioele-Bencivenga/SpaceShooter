@@ -1,6 +1,7 @@
 package utilities;
 
-import utilities.Particle.FireOptions;
+import entities.EchoParticle.FireOptions;
+import entities.EchoParticle;
 import states.PlayState;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
@@ -11,7 +12,7 @@ using utilities.FlxEcho;
 /**
  * A particle emitter class.
  *
- * Modified to work with Echo physics following @austineast's directions
+ * Modified to work with Echo physics following @austineast's directions.
  *
  * Re-implementation of zerolib's ParticleEmitter.hx for HaxeFlixel, without zerolib by @austineast
  * https://gist.github.com/AustinEast/97e23e8f157fc43e451a24107a886c65
@@ -19,14 +20,14 @@ using utilities.FlxEcho;
  * Originally written for zerolib by @01010111
  * https://github.com/01010111/zerolib-flixel/blob/master/zero/flixel/ec/ParticleEmitter.hx
  */
-class EchoEmitter extends FlxTypedGroup<Particle> {
-	var new_particle:Void->Particle;
+class EchoEmitter extends FlxTypedGroup<EchoParticle> {
+	var new_particle:Void->EchoParticle;
 
 	/**
 	 * Creates a new particle emitter
 	 * @param new_particle	a function that returns the desired Particle
 	 */
-	public function new(new_particle:Void->Particle) {
+	public function new(new_particle:Void->EchoParticle) {
 		super();
 
 		this.new_particle = new_particle;
