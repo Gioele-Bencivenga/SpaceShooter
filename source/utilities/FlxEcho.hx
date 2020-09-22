@@ -16,6 +16,8 @@ import flixel.FlxObject;
 import flixel.group.FlxGroup;
 
 using hxmath.math.Vector2;
+using Math;
+using Std;
 
 #if FLX_DEBUG
 import echo.util.Debug.OpenFLDebug;

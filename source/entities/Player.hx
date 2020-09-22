@@ -57,8 +57,8 @@ class Player extends Mover {
 		PlayState.emitter.fire({
 			position: body.get_position(),
 			color: FlxColor.ORANGE,
-			startScale: 1,
-			endScale: 10,
+			startScale: 50,
+			endScale: 50,
 			util_amount: 1,
 			lifespan: 0.5,
 			velocity: Vector2.fromPolar((Math.PI / 180) * (body.rotation + 180), body.velocity.length + direction.length)
