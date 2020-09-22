@@ -119,7 +119,6 @@ class PlayState extends FlxState {
 	}
 
 	override public function update(elapsed:Float) {
-		FlxEcho.update(elapsed); // Make sure to call `FlxEcho.update()` before `super.update()`!
 		super.update(elapsed);
 	}
 }
