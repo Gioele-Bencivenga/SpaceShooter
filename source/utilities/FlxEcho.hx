@@ -1,5 +1,8 @@
-package util;
+package utilities;
 
+import flixel.FlxSprite;
+import flixel.util.FlxColor;
+import flixel.FlxG;
 import echo.Body;
 import echo.Echo;
 import echo.World;
