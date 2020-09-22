@@ -1,5 +1,9 @@
 package entities;
 
+import flixel.util.FlxDestroyUtil;
+import flixel.math.FlxPoint;
+import flixel.util.helpers.FlxRange;
+import flixel.util.FlxColor;
 import hxmath.math.Vector2;
 import flixel.FlxSprite;
 
@@ -25,7 +29,18 @@ class EchoParticle extends FlxSprite {
 	 * What percentage progress this particle has made of its total life.
 	 * Essentially just `(age / lifespan)` on a scale from `0` to `1`.
 	 */
-	public var percent(default, null):Float = 0;
+	public var lifePercent(default, null):Float = 0;
+
+	/**
+	 * The range of values for `scale` over this particle's `lifespan`.
+	 */
+	public var scaleRange:FlxRange<FlxPoint>;
+
+	/**
+	 * The amount of change from the previous frame.
+	 * I'd like to have a more detailed explanation for this but I don't quite get it myself.
+	 */
+	var delta:Float = 0;
 
 	public function new() {
 		super();
@@ -33,25 +48,35 @@ class EchoParticle extends FlxSprite {
 
 		this.add_body();
 		this.get_body().gravity_scale = 0;
+		makeGraphic(1, 1, FlxColor.WHITE);
+
+		scaleRange = new FlxRange<FlxPoint>(FlxPoint.get(1, 1), FlxPoint.get(1, 1));
 	}
 
 	public function fire(options:FireOptions) {
 		reset(options.position.x, options.position.y);
 
-		if (options.animation != null)
-			animation.play(options.animation, true);
-
 		if (options.position != null)
 			this.get_body().set_position(options.position.x, options.position.y);
-
-		if (options.acceleration != null)
-			this.get_body().acceleration.set(options.acceleration.x, options.acceleration.y);
 
 		if (options.velocity != null)
 			this.get_body().velocity.set(options.velocity.x, options.velocity.y);
 
+		if (options.acceleration != null)
+			this.get_body().acceleration.set(options.acceleration.x, options.acceleration.y);
+
+		if (options.animation != null)
+			animation.play(options.animation, true);
+
 		if (options.lifespan != null)
 			lifespan = options.lifespan;
+
+		// need to figure out why scale is giving me all these problems
+		if (options.startScale != null)
+			scaleRange.set(FlxPoint.weak(options.startScale, options.startScale), FlxPoint.weak(options.endScale, options.endScale));
+
+		if (options.color != null)
+			this.color = options.color;
 	}
 
 	override function update(elapsed:Float) {
@@ -60,6 +85,16 @@ class EchoParticle extends FlxSprite {
 
 		if (age >= lifespan && lifespan != 0) {
 			kill();
+		} else {
+			delta = elapsed / lifespan;
+			lifePercent = age / lifespan;
+
+			if (scaleRange.active) {
+				scale.x += (scaleRange.end.x - scaleRange.start.x) * delta;
+				scale.y += (scaleRange.end.y - scaleRange.start.y) * delta;
+
+				// update body here if needed
+			}
 		}
 
 		super.update(elapsed);
@@ -71,6 +106,16 @@ class EchoParticle extends FlxSprite {
 
 		// visible = true; // will I need this? maybe, so it's here just in case
 	}
+
+	override function destroy() {
+		if (scaleRange != null) {
+			scaleRange.start = FlxDestroyUtil.put(scaleRange.start);
+			scaleRange.end = FlxDestroyUtil.put(scaleRange.end);
+			scaleRange = null;
+		}
+
+		super.destroy();
+	}
 }
 
 typedef FireOptions = {
@@ -80,8 +125,10 @@ typedef FireOptions = {
 	?acceleration:Vector2,
 	?animation:String,
 	?lifespan:Float,
+	?startScale:Float,
+	?endScale:Float,
 	?util_amount:Float,
-	?util_color:Int,
+	?color:Int,
 	?util_int:Int,
 	?util_bool:Bool
 }

@@ -1,5 +1,6 @@
 package entities;
 
+import flixel.util.helpers.FlxRange;
 import hxmath.math.Vector2;
 import states.PlayState;
 import flixel.math.FlxPoint;
@@ -55,7 +56,9 @@ class Player extends Mover {
 
 		PlayState.emitter.fire({
 			position: body.get_position(),
-			util_color: FlxColor.RED,
+			color: FlxColor.ORANGE,
+			startScale: 1,
+			endScale: 10,
 			util_amount: 1,
 			lifespan: 0.5,
 			velocity: Vector2.fromPolar((Math.PI / 180) * (body.rotation + 180), body.velocity.length + direction.length)

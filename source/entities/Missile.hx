@@ -64,7 +64,7 @@ class Missile extends Mover {
 
 		PlayState.emitter.fire({
 			position: body.get_position(),
-			util_color: FlxColor.RED,
+			color: FlxColor.ORANGE,
 			util_amount: 1,
 			lifespan: 0.1,
 			velocity: Vector2.fromPolar((Math.PI / 180) * (body.rotation + 180), body.velocity.length + direction.length)
