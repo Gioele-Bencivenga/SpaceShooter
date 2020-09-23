@@ -71,25 +71,25 @@ class PlayState extends FlxState {
 		}
 
 		player = new Player();
-		player.init(20, 20, 35, 10, FlxColor.ORANGE);
+		player.init(20, 20, 10, 5, FlxColor.CYAN);
 		player.add_to_group(movers);
 
 		for (i in 0...3) {
-			var follower = new Follower(FlxG.random.int(0, 300));
-			follower.init(player.body.x - 5, player.body.y - 5, 15, 15, FlxColor.RED);
+			var follower = new Follower(FlxG.random.int(0, 100));
+			follower.init(player.body.x - 5, player.body.y - 5, 5, 5, FlxColor.BROWN);
 			follower.add_to_group(followers);
 			follower.assignParent(player);
 		}
 
 		for (i in 0...3) {
 			var missile = new Missile();
-			missile.init(player.body.x + 200, player.body.y + 100, 20, 10, FlxColor.PINK);
+			missile.init(player.body.x + 20, player.body.y + 10, 5, 3, FlxColor.RED);
 			missile.assignTarget(player);
 			missile.add_to_group(movers);
 		}
 
-		var follower = new Follower(100);
-		follower.init(player.body.x - 5, player.body.y - 5, 20, 20, FlxColor.YELLOW);
+		var follower = new Follower(30);
+		follower.init(player.body.x - 5, player.body.y - 5, 7, 7, FlxColor.YELLOW);
 		follower.add_to_group(followers);
 		follower.assignParent(player);
 
@@ -110,6 +110,7 @@ class PlayState extends FlxState {
 
 		/// CAMERA SETUP
 		FlxG.camera.follow(player, FlxCameraFollowStyle.LOCKON);
+		FlxG.camera.zoom = 2;
 
 		/// DEBUG
 		follDebugLine = new VectorDebugLine(follower, FlxColor.GRAY);

@@ -23,17 +23,16 @@ class Missile extends Mover {
 
 		///TRAIL
 		trailColor = FlxColor.RED;
-		trailStartScale = 5;
-		trailEndScale = 8;
+		trailStartScale = 1;
+		trailEndScale = 3;
 		trailLifeSpan = 0.2;
 
-		maxThrust = 250;
-		rotationalThrust = 50;
+		rotationalThrust = 200;
 
 		body.gravity_scale = 0.5;
 
-		minOffsetX = minOffsetY = -70;
-		maxOffsetX = maxOffsetY = 70;
+		minOffsetX = minOffsetY = -40;
+		maxOffsetX = maxOffsetY = 40;
 		offsetsUpdater = new FlxTimer().start(3, function(_) {
 			updateOffsets();
 		}, 0);
@@ -53,13 +52,14 @@ class Missile extends Mover {
 
 	private function followTarget() {
 		if (target != null) {
+			isThrusting = true;
 			var desiredPoint = target.getMidpoint();
 			desiredPoint.x += offsetX;
 			desiredPoint.y += offsetY;
 
 			direction.set(desiredPoint.x - getMidpoint().x, desiredPoint.y - getMidpoint().y);
 
-			direction.length = maxThrust;
+			direction.length = thrust;
 		}
 	}
 

@@ -12,16 +12,28 @@ using utilities.FlxEcho;
 
 class Mover extends FlxSprite {
 	/// CONSTANTS
-	public static inline final MAX_VELOCITY = 350;
-	public static inline final MAX_ROTATIONAL_VELOCITY = 1000;
+	public static inline final MAX_VELOCITY = 200;
+	public static inline final MAX_ROTATIONAL_VELOCITY = 500;
 
 	/// CONTROL FLAGS
+
+	/**
+	 * Whether the mover can move or not
+	 */
 	var canMove:Bool = false;
 
+	/**
+	 * Whether the mover is applying thrust (trying to move) or not
+	 */
+	var isThrusting:Bool = false;
+
+	/**
+	 * The direction from this mover to where we are pressing
+	 */
 	public var direction(default, null):FlxVector;
 
 	/// MOVEMENT
-	var maxThrust:Int;
+	var thrust:Int;
 	var rotationalThrust:Int;
 
 	/// BODY
@@ -56,12 +68,12 @@ class Mover extends FlxSprite {
 
 		/// MOVEMENT
 		canMove = true;
-		maxThrust = 400;
-		rotationalThrust = 200;
+		thrust = 150;
+		rotationalThrust = 300;
 		direction = FlxVector.get(1, 1);
 		body.max_velocity_length = MAX_VELOCITY;
 		body.max_rotational_velocity = MAX_ROTATIONAL_VELOCITY;
-		body.rotational_drag = 20;
+		body.rotational_drag = 100;
 
 		/// POSITION
 		body.x = _x;
@@ -75,23 +87,34 @@ class Mover extends FlxSprite {
 	}
 
 	function handleMovement() {
-		if (canMove) {
-			var rotationVect = FlxVector.get(1, 1);
-			rotationVect.degrees = body.rotation;
+		if (isThrusting) {
+			if (canMove) {
+				var rotationVect = FlxVector.get(1, 1);
+				rotationVect.degrees = body.rotation;
 
-			// should we rotate left or right towards the mouse?
-			if (rotationVect.crossProductLength(direction) > 0) {
-				body.rotational_velocity = rotationalThrust;
-			} else if (rotationVect.crossProductLength(direction) < 0) {
-				body.rotational_velocity = -rotationalThrust;
-			} else {
-				body.rotational_velocity = 0;
+				var distanceFromTargetAngle = rotationVect.crossProductLength(direction);
+				// should we rotate left or right towards the mouse?
+				if (distanceFromTargetAngle > 0) {
+					body.rotational_velocity = rotationalThrust / 3;
+					if (distanceFromTargetAngle > 90) {
+						body.rotational_velocity = rotationalThrust;
+					}
+				} else if (distanceFromTargetAngle < 0) {
+					body.rotational_velocity = -rotationalThrust / 3;
+					if (distanceFromTargetAngle < -90) {
+						body.rotational_velocity = -rotationalThrust;
+					}
+				} else {
+					body.rotational_velocity = 0;
+				}
+
+				var actualDir = Vector2.fromPolar((Math.PI / 180) * body.rotation, direction.length + thrust);
+				body.acceleration.set(actualDir.x, actualDir.y);
+
+				shootTrail();
 			}
-
-			var actualDir = Vector2.fromPolar((Math.PI / 180) * body.rotation, direction.length * 1.4);
-			body.acceleration.set(actualDir.x, actualDir.y);
-
-			shootTrail();
+		} else {
+			body.acceleration.set(0, 0); // we need to set acceleration to 0 when not thrusting otherwise we'll keep accelerating
 		}
 	}
 
