@@ -72,8 +72,14 @@ class EchoParticle extends FlxSprite {
 			lifespan = options.lifespan;
 
 		// need to figure out why scale is giving me all these problems
-		if (options.startScale != null)
-			scaleRange.set(FlxPoint.weak(options.startScale, options.startScale), FlxPoint.weak(options.endScale, options.endScale));
+		if (options.startScale != null){
+			scaleRange.set(FlxPoint.get(options.startScale, options.startScale), FlxPoint.get(options.endScale, options.endScale));
+
+			//scaleRange.start.x = options.startScale;
+			//scaleRange.start.y = options.startScale;
+			//scaleRange.end.x = options.endScale;
+			//scaleRange.end.y = options.endScale;
+		}
 
 		if (options.color != null)
 			this.color = options.color;

@@ -35,7 +35,7 @@ class Player extends Mover {
 
 		handleInput();
 	}
-
+	
 	function handleInput() {
 		#if FLX_KEYBOARD
 		if (FlxG.mouse.pressed) {

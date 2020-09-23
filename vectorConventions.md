@@ -13,6 +13,7 @@ Once the instance using the vector is destroyed you should `put()` the vector ba
 ## weak()
 
 It seems like `weak()` is just an automatic `put()` when calling functions.
+It's specifically for chaining stuff together.
 
 ``` haxe
 // I want to subtract the point 10, 10 from vector
