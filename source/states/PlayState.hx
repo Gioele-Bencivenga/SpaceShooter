@@ -61,7 +61,7 @@ class PlayState extends FlxState {
 			gravity_y: 200
 		});
 
-		var tilemap = TileMap.generate(collisionLayer.getData(/*true*/), 16, 16, collisionLayer.widthInTiles, collisionLayer.heightInTiles, 0, 0, 1);
+		var tilemap = TileMap.generate(collisionLayer.getData(/*true*/), 16, 16, collisionLayer.widthInTiles, collisionLayer.heightInTiles, 0, 0, 2);
 		for (t in tilemap) {
 			var tile = new Tile();
 			var tileBounds = t.bounds(); // since the generated bodies are optimized we need to pass their actual width and height
@@ -71,7 +71,7 @@ class PlayState extends FlxState {
 		}
 
 		player = new Player();
-		player.init(16, 16, 35, 10, FlxColor.ORANGE);
+		player.init(20, 20, 35, 10, FlxColor.ORANGE);
 		player.add_to_group(movers);
 
 		for (i in 0...3) {
