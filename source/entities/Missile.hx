@@ -21,6 +21,12 @@ class Missile extends Mover {
 	override function init(_x:Float, _y:Float, _width:Int, _height:Int, _color:FlxColor) {
 		super.init(_x, _y, _width, _height, _color);
 
+		///TRAIL
+		trailColor = FlxColor.RED;
+		trailStartScale = 5;
+		trailEndScale = 8;
+		trailLifeSpan = 0.2;
+
 		maxThrust = 250;
 		rotationalThrust = 50;
 
@@ -61,13 +67,5 @@ class Missile extends Mover {
 		super.update(elapsed);
 
 		followTarget();
-
-		PlayState.emitter.fire({
-			position: body.get_position(),
-			color: FlxColor.ORANGE,
-			util_amount: 1,
-			lifespan: 0.1,
-			velocity: Vector2.fromPolar((Math.PI / 180) * (body.rotation + 180), body.velocity.length + direction.length)
-		});
 	}
 }

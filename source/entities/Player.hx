@@ -24,8 +24,12 @@ class Player extends Mover {
 		super.init(_x, _y, _width, _height, _color);
 
 		// loadGraphic("assets/images/characters/ship/straight.png", true, 16, 26);
-
 		// setGraphicSize(Std.int(width), Std.int(height));
+		/// TRAIL
+		trailColor = FlxColor.ORANGE;
+		trailStartScale = 6;
+		trailEndScale = 9;
+		trailLifeSpan = 0.4;
 
 		pressPosition = FlxVector.get(1, 1);
 	}
@@ -35,7 +39,7 @@ class Player extends Mover {
 
 		handleInput();
 	}
-	
+
 	function handleInput() {
 		#if FLX_KEYBOARD
 		if (FlxG.mouse.pressed) {
@@ -53,15 +57,5 @@ class Player extends Mover {
 
 		direction.set(getPosition().x, getPosition().y);
 		direction.subtractPoint(pressPosition);
-
-		PlayState.emitter.fire({
-			position: body.get_position(),
-			color: FlxColor.ORANGE,
-			startScale: 1,
-			endScale: 5,
-			util_amount: 1,
-			lifespan: 0.5,
-			velocity: Vector2.fromPolar((Math.PI / 180) * (body.rotation + 180), body.velocity.length + direction.length)
-		});
 	}
 }

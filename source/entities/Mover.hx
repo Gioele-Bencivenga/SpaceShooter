@@ -1,5 +1,6 @@
 package entities;
 
+import states.PlayState;
 import flixel.tweens.FlxTween;
 import flixel.math.FlxVector;
 import flixel.util.FlxColor;
@@ -26,6 +27,12 @@ class Mover extends FlxSprite {
 	/// BODY
 	public var body(default, null):Body;
 
+	/// TRAIL
+	var trailColor:FlxColor;
+	var trailStartScale:Float;
+	var trailEndScale:Float;
+	var trailLifeSpan:Float;
+
 	public function new() {
 		super();
 	}
@@ -36,6 +43,12 @@ class Mover extends FlxSprite {
 
 		/// GRAPHIC
 		makeGraphic(_width, _height, _color);
+
+		/// TRAIL: basic trail characteristics, to be customized in subclasses
+		trailColor = FlxColor.WHITE;
+		trailStartScale = 5;
+		trailEndScale = 10;
+		trailLifeSpan = 0.3;
 
 		/// BODY
 		this.add_body({mass: 1});
@@ -77,6 +90,20 @@ class Mover extends FlxSprite {
 
 			var actualDir = Vector2.fromPolar((Math.PI / 180) * body.rotation, direction.length * 1.4);
 			body.acceleration.set(actualDir.x, actualDir.y);
+
+			shootTrail();
 		}
+	}
+
+	function shootTrail() {
+		PlayState.emitter.fire({
+			position: body.get_position(),
+			color: trailColor,
+			startScale: trailStartScale,
+			endScale: trailEndScale,
+			util_amount: 1,
+			lifespan: trailLifeSpan,
+			velocity: Vector2.fromPolar((Math.PI / 180) * (body.rotation + 180), body.velocity.length / 2 + direction.length / 2)
+		});
 	}
 }
