@@ -58,7 +58,7 @@ class PlayState extends FlxState {
 		FlxEcho.init({
 			width: collisionLayer.width, // Make the size of your Echo world equal the size of your play field
 			height: collisionLayer.height,
-			gravity_y: 200
+			gravity_y: 150
 		});
 
 		var tilemap = TileMap.generate(collisionLayer.getData(/*true*/), 16, 16, collisionLayer.widthInTiles, collisionLayer.heightInTiles, 0, 0, 2);
@@ -70,34 +70,34 @@ class PlayState extends FlxState {
 			tileBounds.put(); // put the bounds AABB back in the pool
 		}
 
-		player = new Player();
-		player.init(20, 20, 10, 5, FlxColor.CYAN);
-		player.add_to_group(movers);
+		/// EMITTERS
+		emitter = new EchoEmitter(() -> {
+			new EchoParticle();
+		});
+		add(emitter);
 
+		/// ENTITIES
+		map.loadEntities(loadEntity, "entities");
+		// followers
 		for (i in 0...3) {
-			var follower = new Follower(FlxG.random.int(0, 100));
+			var follower = new Follower(FlxG.random.int(0, 30));
 			follower.init(player.body.x - 5, player.body.y - 5, 5, 5, FlxColor.BROWN);
 			follower.add_to_group(followers);
 			follower.assignParent(player);
 		}
 
+		var follower = new Follower(10);
+		follower.init(player.body.x - 5, player.body.y - 5, 7, 7, FlxColor.YELLOW);
+		follower.add_to_group(followers);
+		follower.assignParent(player);
+
+		// missiles
 		for (i in 0...3) {
 			var missile = new Missile();
 			missile.init(player.body.x + 20, player.body.y + 10, 5, 3, FlxColor.RED);
 			missile.assignTarget(player);
 			missile.add_to_group(movers);
 		}
-
-		var follower = new Follower(30);
-		follower.init(player.body.x - 5, player.body.y - 5, 7, 7, FlxColor.YELLOW);
-		follower.add_to_group(followers);
-		follower.assignParent(player);
-
-		/// EMITTERS
-		emitter = new EchoEmitter(() -> {
-			new EchoParticle();
-		});
-		add(emitter);
 
 		/// COLLISIONS
 		followers.listen(terrainTiles);
@@ -117,6 +117,15 @@ class PlayState extends FlxState {
 		add(follDebugLine);
 
 		super.create();
+	}
+
+	function loadEntity(entity:EntityData) {
+		switch (entity.name) {
+			case "player":
+				player = new Player();
+				player.init(entity.x, entity.y, 10, 5, FlxColor.CYAN);
+				player.add_to_group(movers);
+		}
 	}
 
 	override public function update(elapsed:Float) {
