@@ -35,7 +35,7 @@ class EchoEmitter extends FlxTypedGroup<EchoParticle> {
 
 	/**
 	 * Fires a particle with given options. If none are available, it will create a new particle using the function passed in new()
-	 * @param options
+	 * @param options options relating to how the particles should look and behave
 	 */
 	public function fire(options:FireOptions) {
 		while (getFirstAvailable() == null) {

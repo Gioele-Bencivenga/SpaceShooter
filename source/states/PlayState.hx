@@ -29,6 +29,7 @@ class PlayState extends FlxState {
 	public static var movers:FlxGroup;
 	public static var followers:FlxGroup;
 	public static var terrainTiles:FlxGroup;
+	public static var trailParticles:FlxGroup;
 
 	/// EMITTERS
 	public static var emitter:EchoEmitter;
@@ -40,17 +41,19 @@ class PlayState extends FlxState {
 
 	override public function create() {
 		/// GROUPS
-		terrainTiles = new FlxGroup();
 		movers = new FlxGroup();
 		followers = new FlxGroup();
+		terrainTiles = new FlxGroup();
+		trailParticles = new FlxGroup();
 
 		/// TILEMAP AND LAYERS
 		map = new FlxOgmo3Loader('assets/data/ogmo/The-Pit.ogmo', 'assets/data/ogmo/firstMap.json');
 		collisionLayer = map.loadTilemap('assets/data/tilesets/tiles.png', 'collisions');
+		add(collisionLayer);
 
 		// Add groups with the correct rendering order
-		add(collisionLayer);
 		add(terrainTiles);
+		add(trailParticles);
 		add(followers);
 		add(movers);
 
@@ -79,12 +82,14 @@ class PlayState extends FlxState {
 		/// ENTITIES
 		map.loadEntities(loadEntity, "entities");
 		// followers
-		for (i in 0...3) {
-			var follower = new Follower(FlxG.random.int(0, 30));
-			follower.init(player.body.x - 5, player.body.y - 5, 5, 5, FlxColor.BROWN);
-			follower.add_to_group(followers);
-			follower.assignParent(player);
-		}
+		/*
+			for (i in 0...3) {
+					var follower = new Follower(FlxG.random.int(0, 30));
+					follower.init(player.body.x - 5, player.body.y - 5, 5, 5, FlxColor.BROWN);
+					follower.add_to_group(followers);
+					follower.assignParent(player);
+				}
+		 */
 
 		var follower = new Follower(10);
 		follower.init(player.body.x - 5, player.body.y - 5, 7, 7, FlxColor.YELLOW);
@@ -103,6 +108,8 @@ class PlayState extends FlxState {
 		followers.listen(terrainTiles);
 		movers.listen(terrainTiles);
 		movers.listen(movers);
+		// trailParticles.listen(terrainTiles); // gives the error "Unable to get property 'length' of undefined or null reference"
+		// emitter.listen(terrainTiles); // gives the error "Unable to get property 'length' of undefined or null reference"
 
 		/// HUD
 		var hud = new HUD(player);

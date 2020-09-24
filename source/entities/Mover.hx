@@ -90,7 +90,7 @@ class Mover extends FlxSprite {
 		if (isThrusting) {
 			if (canMove) {
 				var rotationVect = FlxVector.get(1, 1);
-				rotationVect.degrees = body.rotation;
+				rotationVect.degrees = body.rotation - 0; // -180 for making the player follow the mouse?
 
 				var distanceFromTargetAngle = rotationVect.crossProductLength(direction);
 				// should we rotate left or right towards the mouse?

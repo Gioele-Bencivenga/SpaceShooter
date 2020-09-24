@@ -1,5 +1,6 @@
 package entities;
 
+import states.PlayState;
 import flixel.util.FlxDestroyUtil;
 import flixel.math.FlxPoint;
 import flixel.util.helpers.FlxRange;
@@ -48,6 +49,7 @@ class EchoParticle extends FlxSprite {
 
 		this.add_body();
 		this.get_body().gravity_scale = 0;
+
 		makeGraphic(1, 1, FlxColor.WHITE);
 
 		scaleRange = new FlxRange<FlxPoint>(FlxPoint.get(1, 1), FlxPoint.get(1, 1));
@@ -55,6 +57,8 @@ class EchoParticle extends FlxSprite {
 
 	public function fire(options:FireOptions) {
 		reset(options.position.x, options.position.y);
+
+		//this.add_to_group(PlayState.trailParticles);
 
 		if (options.position != null)
 			this.get_body().set_position(options.position.x, options.position.y);
