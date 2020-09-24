@@ -1,11 +1,7 @@
 package utilities;
 
-import entities.EchoParticle.FireOptions;
 import entities.EchoParticle;
-import states.PlayState;
-import flixel.FlxSprite;
 import flixel.group.FlxGroup;
-import flixel.math.FlxPoint;
 
 using utilities.FlxEcho;
 

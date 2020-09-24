@@ -1,8 +1,5 @@
 package entities;
 
-import hxmath.math.Vector2;
-import states.PlayState;
-import flixel.math.FlxVector;
 import flixel.FlxG;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;

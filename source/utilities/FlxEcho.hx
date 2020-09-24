@@ -247,7 +247,7 @@ class FlxEcho extends FlxBasic {
 			sprite.x -= sprite.origin.x;
 			sprite.y -= sprite.origin.y;
 		}
-		object.angle = body.rotation;
+		object.angle = body.rotation + 90;
 		if (reset_acceleration)
 			body.acceleration.set(0, 0);
 	}

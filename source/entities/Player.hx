@@ -1,14 +1,8 @@
 package entities;
 
-import flixel.util.helpers.FlxRange;
-import hxmath.math.Vector2;
-import states.PlayState;
-import flixel.math.FlxPoint;
-import entities.EchoParticle.FireOptions;
 import flixel.math.FlxVector;
 import flixel.util.FlxColor;
 import flixel.FlxG;
-import utilities.EchoEmitter;
 
 using utilities.FlxEcho;
 

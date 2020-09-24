@@ -1,6 +1,5 @@
 package entities;
 
-import states.PlayState;
 import flixel.util.FlxDestroyUtil;
 import flixel.math.FlxPoint;
 import flixel.util.helpers.FlxRange;

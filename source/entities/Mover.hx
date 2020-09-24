@@ -1,7 +1,6 @@
 package entities;
 
 import states.PlayState;
-import flixel.tweens.FlxTween;
 import flixel.math.FlxVector;
 import flixel.util.FlxColor;
 import echo.Body;
