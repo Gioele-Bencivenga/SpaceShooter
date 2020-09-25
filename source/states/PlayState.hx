@@ -99,7 +99,7 @@ class PlayState extends FlxState {
 		// missiles
 		for (i in 0...3) {
 			var missile = new Missile();
-			missile.init(player.body.x + 20, player.body.y + 10, 5, 3, FlxColor.RED);
+			missile.init(player.body.x + 20, player.body.y + 10, 5, 9, FlxColor.RED);
 			missile.assignTarget(player);
 			missile.add_to_group(movers);
 		}
