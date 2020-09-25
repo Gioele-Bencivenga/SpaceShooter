@@ -72,7 +72,7 @@ class Mover extends FlxSprite {
 		direction = FlxVector.get(1, 1);
 		body.max_velocity_length = MAX_VELOCITY;
 		body.max_rotational_velocity = MAX_ROTATIONAL_VELOCITY;
-		body.rotational_drag = 100;
+		body.rotational_drag = 50;
 
 		/// POSITION
 		body.x = _x;
@@ -94,14 +94,20 @@ class Mover extends FlxSprite {
 				var distanceFromTargetAngle = rotationVect.crossProductLength(direction);
 				// should we rotate left or right towards the mouse?
 				if (distanceFromTargetAngle > 0) {
-					body.rotational_velocity = rotationalThrust / 2;
-					if (distanceFromTargetAngle > 90) {
-						body.rotational_velocity = rotationalThrust;
+					body.rotational_velocity = rotationalThrust / 4;
+					if (distanceFromTargetAngle > 35) {
+						body.rotational_velocity = rotationalThrust / 2;
+						if (distanceFromTargetAngle > 80) {
+							body.rotational_velocity = rotationalThrust;
+						}
 					}
 				} else if (distanceFromTargetAngle < 0) {
-					body.rotational_velocity = -rotationalThrust / 2;
-					if (distanceFromTargetAngle < -90) {
-						body.rotational_velocity = -rotationalThrust;
+					body.rotational_velocity = -rotationalThrust / 4;
+					if (distanceFromTargetAngle < -35) {
+						body.rotational_velocity = -rotationalThrust / 2;
+						if (distanceFromTargetAngle < -80) {
+							body.rotational_velocity = -rotationalThrust;
+						}
 					}
 				} else {
 					body.rotational_velocity = 0;
