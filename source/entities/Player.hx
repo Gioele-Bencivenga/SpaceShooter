@@ -1,5 +1,6 @@
 package entities;
 
+import states.PlayState;
 import flixel.math.FlxVector;
 import flixel.util.FlxColor;
 import flixel.FlxG;
@@ -14,8 +15,8 @@ class Player extends Mover {
 		super();
 	}
 
-	override function init(_x:Float, _y:Float, _width:Int, _height:Int, _color:FlxColor) {
-		super.init(_x, _y, _width, _height, _color);
+	override function init(_x:Float, _y:Float, _radius:Int, _color:FlxColor) {
+		super.init(_x, _y, _radius, _color);
 
 		/// GRAPHICS
 		loadGraphic("assets/images/characters/ship/alien.png", true, 16, 26);
@@ -28,9 +29,9 @@ class Player extends Mover {
 
 		/// TRAIL
 		trailColor = FlxColor.ORANGE;
-		trailStartScale = 3;
+		trailStartScale = 1;
 		trailEndScale = 5;
-		trailLifeSpan = 0.4;
+		trailLifeSpan = 0.2;
 
 		pressPosition = FlxVector.get(1, 1);
 	}
@@ -44,6 +45,11 @@ class Player extends Mover {
 
 	function handleInput() {
 		direction.set(getPosition().x, getPosition().y);
+
+		/*
+			var normDirection = direction.negate();
+			FlxG.camera.zoom = normDirection.length;
+		 */
 
 		#if FLX_KEYBOARD
 		if (FlxG.mouse.pressed) {

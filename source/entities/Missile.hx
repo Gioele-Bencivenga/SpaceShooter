@@ -22,9 +22,12 @@ class Missile extends Mover {
 		trailColor = FlxColor.RED;
 		trailStartScale = 1;
 		trailEndScale = 3;
-		trailLifeSpan = 0.2;
+		trailLifeSpan = 0.1;
 
-		rotationalThrust = 200;
+		body.max_velocity_length += 30;
+
+		thrust = 250;
+		rotationalThrust = 150;
 
 		body.gravity_scale = 0.5;
 

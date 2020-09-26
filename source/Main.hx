@@ -34,6 +34,7 @@ class Main extends Sprite {
 		// ADMOB EXTENSION SEEMS TO BE DEAD FOR NOW, ASK COCOCORE HOW HE INCLUDED BANNER
 
 		super();
-		addChild(new FlxGame(768, 1366, PlayState, 1, 60, 60, true));
+		// addChild(new FlxGame(768, 1366, PlayState, 1, 60, 60, true));
+		addChild(new FlxGame(1280, 720, PlayState, 1, 60, 60, true));
 	}
 }

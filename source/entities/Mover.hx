@@ -1,5 +1,6 @@
 package entities;
 
+import echo.data.Options.ShapeOptions;
 import states.PlayState;
 import flixel.math.FlxVector;
 import flixel.util.FlxColor;
@@ -32,7 +33,12 @@ class Mover extends FlxSprite {
 	public var direction(default, null):FlxVector;
 
 	/// MOVEMENT
+
+	/**
+	 * Movers already thrust with the value of `direction.length`, this is thrust additional to that.
+	 */
 	var thrust:Int;
+
 	var rotationalThrust:Int;
 
 	/// BODY
@@ -48,12 +54,9 @@ class Mover extends FlxSprite {
 		super();
 	}
 
-	public function init(_x:Float, _y:Float, _width:Int, _height:Int, _color:FlxColor) {
-		width = _width; // setting the FlxObject's properties is needed unless you specify the body's dimensions when creating it
-		height = _height;
-
+	public function init(_x:Float, _y:Float, _radius:Int, _color:FlxColor) {
 		/// GRAPHIC
-		makeGraphic(_width, _height, _color);
+		makeGraphic(_radius, _radius, _color);
 
 		/// TRAIL: basic trail characteristics, to be customized in subclasses
 		trailColor = FlxColor.WHITE;
@@ -62,12 +65,22 @@ class Mover extends FlxSprite {
 		trailLifeSpan = 0.3;
 
 		/// BODY
-		this.add_body({mass: 1});
+		this.add_body({
+			shape: {
+				type: POLYGON,
+				sides: 5,
+				offset_x: 2,
+				radius: _radius,
+				rotation: 50, // why doesn't this work?
+			},
+			rotation: -90,
+			mass: 1
+		});
 		body = this.get_body();
 
 		/// MOVEMENT
 		canMove = true;
-		thrust = 90;
+		thrust = 0;
 		rotationalThrust = 300;
 		direction = FlxVector.get(1, 1);
 		body.max_velocity_length = MAX_VELOCITY;
@@ -113,7 +126,7 @@ class Mover extends FlxSprite {
 					body.rotational_velocity = 0;
 				}
 
-				var actualDir = Vector2.fromPolar((Math.PI / 180) * body.rotation, direction.length + thrust);
+				var actualDir = Vector2.fromPolar((Math.PI / 180) * body.rotation, direction.length * 2 + thrust);
 				body.acceleration.set(actualDir.x, actualDir.y);
 
 				shootTrail();
@@ -124,14 +137,16 @@ class Mover extends FlxSprite {
 	}
 
 	function shootTrail() {
+		var trailPosition = body.get_position();
+
 		PlayState.emitter.fire({
-			position: body.get_position(),
+			position: trailPosition,
 			color: trailColor,
 			startScale: trailStartScale,
 			endScale: trailEndScale,
 			util_amount: 1,
 			lifespan: trailLifeSpan,
-			velocity: Vector2.fromPolar((Math.PI / 180) * (body.rotation + 180), body.velocity.length / 2 + direction.length / 2)
+			velocity: Vector2.fromPolar((Math.PI / 180) * (body.rotation + 180), 350 + direction.length)
 		});
 	}
 }

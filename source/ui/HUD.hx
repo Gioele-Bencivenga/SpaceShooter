@@ -93,7 +93,7 @@ class HUD extends FlxTypedGroup<FlxSprite> {
 	}
 
 	public function updateHUD() {
-		txtHealth.text = 'degrees: ${player.direction.degrees}';
+		txtHealth.text = 'direction length: ${player.direction.length}, normal: ${player.direction.normalize().length}';
 
 		// txtDeaths.text = 'INFECTED: ${nOfInfected}, DEATHS: ${PlayState.deadCount}';
 

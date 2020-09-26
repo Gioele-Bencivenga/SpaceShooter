@@ -51,9 +51,14 @@ class PlayState extends FlxState {
 		collisionLayer = map.loadTilemap('assets/data/tilesets/tiles.png', 'collisions');
 		add(collisionLayer);
 
-		// Add groups with the correct rendering order
+		// Add stuff with the correct rendering order
 		add(terrainTiles);
-		add(trailParticles);
+		add(trailParticles); // not working yet
+		/// EMITTERS
+		emitter = new EchoEmitter(() -> {
+			new EchoParticle();
+		});
+		add(emitter);
 		add(followers);
 		add(movers);
 
@@ -73,12 +78,6 @@ class PlayState extends FlxState {
 			tileBounds.put(); // put the bounds AABB back in the pool
 		}
 
-		/// EMITTERS
-		emitter = new EchoEmitter(() -> {
-			new EchoParticle();
-		});
-		add(emitter);
-
 		/// ENTITIES
 		map.loadEntities(loadEntity, "entities");
 		// followers
@@ -91,21 +90,23 @@ class PlayState extends FlxState {
 				}
 		 */
 
-		var follower = new Follower(10);
-		follower.init(player.body.x - 5, player.body.y - 5, 7, 7, FlxColor.YELLOW);
-		follower.add_to_group(followers);
-		follower.assignParent(player);
+		//var follower = new Follower(10);
+		//follower.init(player.body.x - 5, player.body.y - 5, 7, 7, FlxColor.YELLOW);
+		//follower.add_to_group(followers);
+		//follower.assignParent(player);
 
 		// missiles
+		/*
 		for (i in 0...3) {
 			var missile = new Missile();
 			missile.init(player.body.x + 20, player.body.y + 10, 5, 9, FlxColor.RED);
 			missile.assignTarget(player);
 			missile.add_to_group(movers);
 		}
+		*/
 
 		/// COLLISIONS
-		followers.listen(terrainTiles);
+		//followers.listen(terrainTiles);
 		movers.listen(terrainTiles);
 		movers.listen(movers);
 		// trailParticles.listen(terrainTiles); // gives the error "Unable to get property 'length' of undefined or null reference"
@@ -120,8 +121,8 @@ class PlayState extends FlxState {
 		FlxG.camera.zoom = 2;
 
 		/// DEBUG
-		follDebugLine = new VectorDebugLine(follower, FlxColor.GRAY);
-		add(follDebugLine);
+		//follDebugLine = new VectorDebugLine(follower, FlxColor.GRAY);
+		//add(follDebugLine);
 
 		super.create();
 	}
@@ -130,7 +131,7 @@ class PlayState extends FlxState {
 		switch (entity.name) {
 			case "player":
 				player = new Player();
-				player.init(entity.x, entity.y, 10, 5, FlxColor.CYAN);
+				player.init(entity.x, entity.y, 7, FlxColor.CYAN);
 				player.add_to_group(movers);
 		}
 	}
