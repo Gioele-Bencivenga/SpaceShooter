@@ -15,8 +15,8 @@ class Missile extends Mover {
 	var maxOffsetY:Int;
 	var offsetsUpdater:FlxTimer; // timer that updates the offsets
 
-	override function init(_x:Float, _y:Float, _width:Int, _height:Int, _color:FlxColor) {
-		super.init(_x, _y, _width, _height, _color);
+	override function init(_x:Float, _y:Float, _radius:Int, _color:FlxColor) {
+		super.init(_x, _y, _radius, _color);
 
 		///TRAIL
 		trailColor = FlxColor.RED;
