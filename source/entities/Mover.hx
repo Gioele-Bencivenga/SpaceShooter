@@ -1,5 +1,6 @@
 package entities;
 
+import flixel.util.helpers.FlxPointRangeBounds;
 import flixel.math.FlxRandom;
 import flixel.util.helpers.FlxRange;
 import flixel.util.helpers.FlxRangeBounds;
@@ -64,7 +65,7 @@ class Mover extends FlxSprite {
 
 		/// TRAIL: basic trail characteristics, to be customized in subclasses
 		trailColor = FlxColor.WHITE;
-		trailStartScale = 5;
+		trailStartScale = 6;
 		trailEndScale = 15;
 		trailLifeSpan = 0.3;
 
@@ -148,16 +149,14 @@ class Mover extends FlxSprite {
 			position: trailPosition,
 			posDriftX: new FlxRange(-0.5, 0.5),
 			posDriftY: new FlxRange(-0.5, 0.5),
-			color: trailColor,
-			startScale: trailStartScale,
-			startScaleDrift: new FlxRange(-1.0, 1.0),
-			endScale: trailEndScale,
-			endScaleDrift: new FlxRange(0.0, 1),
+			color: new FlxRangeBounds(FlxColor.WHITE, FlxColor.YELLOW, FlxColor.ORANGE, FlxColor.RED),
+			alpha: new FlxRangeBounds(1.0, 1.0, 0, 0.1),
+			scale: new FlxPointRangeBounds(0, 0, 3, 3, 13, 13, 20, 20),
 			amount: 6,
 			lifespan: trailLifeSpan,
-			lifespanDrift: 0.05,
+			lifespanDrift: 0.01,
 			velocity: Vector2.fromPolar((Math.PI / 180) * (body.rotation + 180 + randAngle), 300 + direction.length),
-			velocityDrift: new FlxRange(-50.0, 50.0),
+			velocityDrift: new FlxRange(-20.0, 20.0),
 			rotational_velocity: new FlxRange(-500.0, 500.0)
 		});
 	}

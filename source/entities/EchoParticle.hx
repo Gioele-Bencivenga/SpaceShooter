@@ -1,5 +1,6 @@
 package entities;
 
+import flixel.util.helpers.FlxPointRangeBounds;
 import flixel.FlxG;
 import flixel.math.FlxRandom;
 import flixel.util.FlxDestroyUtil;
@@ -18,9 +19,14 @@ using utilities.FlxEcho;
  */
 class EchoParticle extends FlxSprite {
 	/**
-	 * Sets `colour` range of particles launched from an emitter.
+	 * The range of values for `color` over this particle's `lifespan`.
 	 */
-	public var colour(default, null):FlxRangeBounds<FlxColor> = new FlxRangeBounds(FlxColor.WHITE, FlxColor.WHITE);
+	public var colorRange(default, null):FlxRange<FlxColor>;
+
+	/**
+	 * The range of values for `alpha` over this particle's `lifespan`.
+	 */
+	public var alphaRange(default, null):FlxRange<Float>;
 
 	/**
 	 * The minimum possible angle at which this particle can be fired.
@@ -55,6 +61,11 @@ class EchoParticle extends FlxSprite {
 	public var scaleRange(default, null):FlxRange<FlxPoint>;
 
 	/**
+	 * Keep the scale ratio of the particle. Uses the `x` values of `scale`.
+	 */
+	public var keepScaleRatio:Bool = false;
+
+	/**
 	 * The amount of change from the previous frame.
 	 * I'd like to have a more detailed explanation for this but I don't quite get it myself.
 	 */
@@ -70,6 +81,8 @@ class EchoParticle extends FlxSprite {
 		makeGraphic(1, 1, FlxColor.WHITE);
 
 		scaleRange = new FlxRange<FlxPoint>(FlxPoint.get(1, 1), FlxPoint.get(1, 1));
+		colorRange = new FlxRange<FlxColor>(FlxColor.WHITE);
+		alphaRange = new FlxRange<Float>(1, 1);
 	}
 
 	public function fire(options:FireOptions) {
@@ -119,37 +132,40 @@ class EchoParticle extends FlxSprite {
 			lifespan = options.lifespan;
 		}
 
-		if (options.color != null) {
-			
-		}
-
 		if (options.animation != null)
 			animation.play(options.animation, true);
 
 		/// SCALE STUFF
-		if (options.startScale != null) {
-			if (options.startScaleDrift != null) {
-				options.startScale += FlxG.random.float(options.startScaleDrift.start, options.startScaleDrift.end);
-			}
-			scaleRange.start.set(options.startScale, options.startScale);
+		if (options.scale != null) {
+			scaleRange.start.x = FlxG.random.float(options.scale.start.min.x, options.scale.start.max.x);
+			scaleRange.start.y = keepScaleRatio ? scaleRange.start.x : FlxG.random.float(options.scale.start.min.y, options.scale.start.max.y);
+			scaleRange.end.x = FlxG.random.float(options.scale.end.min.x, options.scale.end.max.x);
+			scaleRange.end.y = keepScaleRatio ? scaleRange.end.x : FlxG.random.float(options.scale.end.min.y, options.scale.end.max.y);
+			scaleRange.active = lifespan > 0 && !scaleRange.start.equals(scaleRange.end);
+			scale.x = scaleRange.start.x;
+			scale.y = scaleRange.start.y;
 		} else {
-			scaleRange.start.set(1, 1);
+			scaleRange.active = false;
 		}
 
-		if (options.endScale != null) {
-			if (options.endScaleDrift != null) {
-				options.endScale += FlxG.random.float(options.endScaleDrift.start, options.endScaleDrift.end);
-			}
-			scaleRange.end.set(options.endScale, options.endScale);
+		/// COLOR STUFF
+		if (options.color != null) {
+			colorRange.start = FlxG.random.color(options.color.start.min, options.color.start.max);
+			colorRange.end = FlxG.random.color(options.color.end.min, options.color.end.max);
+			colorRange.active = lifespan > 0 && colorRange.start != colorRange.end;
+			color = colorRange.start;
 		} else {
-			scaleRange.end.set(1, 1);
+			colorRange.active = false;
 		}
-		// actually setting the particle's scale
-		scale.x = scaleRange.start.x;
-		scale.y = scaleRange.start.y;
 
-		if (options.color != null)
-			this.color = options.color;
+		if (options.alpha != null) {
+			alphaRange.start = FlxG.random.float(options.alpha.start.min, options.alpha.start.max);
+			alphaRange.end = FlxG.random.float(options.alpha.end.min, options.alpha.end.max);
+			alphaRange.active = lifespan > 0 && alphaRange.start != alphaRange.end;
+			alpha = alphaRange.start;
+		} else {
+			alphaRange.active = false;
+		}
 	}
 
 	override function update(elapsed:Float) {
@@ -168,6 +184,14 @@ class EchoParticle extends FlxSprite {
 
 				// update body here if needed
 			}
+
+			if (colorRange.active) {
+				color = FlxColor.interpolate(colorRange.start, colorRange.end, lifePercent);
+			}
+
+			if (alphaRange.active) {
+				alpha += (alphaRange.end - alphaRange.start) * delta;
+			}
 		}
 
 		super.update(elapsed);
@@ -181,11 +205,22 @@ class EchoParticle extends FlxSprite {
 	}
 
 	override function destroy() {
+		if (scale != null) {
+			//scale = null;
+		}
+
 		if (scaleRange != null) {
 			scaleRange.start = FlxDestroyUtil.put(scaleRange.start);
 			scaleRange.end = FlxDestroyUtil.put(scaleRange.end);
 			scaleRange = null;
-			colour = null;
+		}
+
+		if (colorRange != null) {
+			colorRange = null;
+		}
+
+		if (alphaRange != null) {
+			alphaRange = null;
 		}
 
 		super.destroy();
@@ -205,13 +240,11 @@ typedef FireOptions = {
 	?minAngle:Int,
 	?maxAngle:Int,
 	?dragDrift:Float,
-	?color:Int,
+	?color:FlxRangeBounds<FlxColor>,
+	?alpha:FlxRangeBounds<Float>,
 	?animation:String,
 	?lifespan:Float,
 	?lifespanDrift:Float,
-	?startScale:Float,
-	?startScaleDrift:FlxRange<Float>,
-	?endScale:Float,
-	?endScaleDrift:FlxRange<Float>,
+	?scale:FlxPointRangeBounds,
 	?amount:Int,
 }
