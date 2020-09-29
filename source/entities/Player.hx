@@ -1,6 +1,5 @@
 package entities;
 
-import states.PlayState;
 import flixel.math.FlxVector;
 import flixel.util.FlxColor;
 import flixel.FlxG;
@@ -51,7 +50,7 @@ class Player extends Mover {
 			FlxG.camera.zoom = normDirection.length;
 		 */
 
-		#if FLX_KEYBOARD
+		#if (desktop || web)
 		if (FlxG.mouse.pressed) {
 			isThrusting = true;
 			pressPosition.set(FlxG.mouse.x, FlxG.mouse.y);
@@ -60,12 +59,14 @@ class Player extends Mover {
 			pressPosition.set(x, y);
 			isThrusting = false;
 		}
-		#else
+		#end
+		#if mobile
 		// this doesn't work properly and I don't know why
-		if (FlxG.touches.getFirst() != null) {
-			var touchInput = FlxG.touches.getFirst();
-			pressPosition.set(touchInput.getScreenPosition().x, touchInput.getScreenPosition().y);
-		}
+		if (FlxTouchManager.get)
+			if (FlxG.touches.getFirst() != null) {
+				var touchInput = FlxG.touches.getFirst();
+				pressPosition.set(touchInput.getScreenPosition().x, touchInput.getScreenPosition().y);
+			}
 		#end
 	}
 

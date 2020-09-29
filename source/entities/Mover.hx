@@ -15,7 +15,7 @@ import flixel.FlxSprite;
 
 using utilities.FlxEcho;
 
-class Mover extends FlxSprite {
+class Mover extends Fixed {
 	/// CONSTANTS
 	public static inline final MAX_VELOCITY = 200;
 	public static inline final MAX_ROTATIONAL_VELOCITY = 500;
@@ -46,9 +46,6 @@ class Mover extends FlxSprite {
 
 	var rotationalThrust:Int;
 
-	/// BODY
-	public var body(default, null):Body;
-
 	/// TRAIL
 	var trailColor:FlxColor;
 	var trailStartScale:Float;
@@ -59,42 +56,14 @@ class Mover extends FlxSprite {
 		super();
 	}
 
-	public function init(_x:Float, _y:Float, _radius:Int, _color:FlxColor) {
-		/// GRAPHIC
-		makeGraphic(_radius, _radius, _color);
+	override function init(_x:Float, _y:Float, _radius:Int, _color:FlxColor) {
+		super.init(_x, _y, _radius, _color);
 
 		/// TRAIL: basic trail characteristics, to be customized in subclasses
 		trailColor = FlxColor.WHITE;
 		trailStartScale = 6;
 		trailEndScale = 15;
 		trailLifeSpan = 0.3;
-
-		/// BODY
-		this.add_body({
-			shape: {
-				type: POLYGON,
-				sides: 5,
-				offset_x: 2,
-				radius: _radius,
-				rotation: 50, // why doesn't this work?
-			},
-			rotation: -90,
-			mass: 1
-		});
-		body = this.get_body();
-
-		/// MOVEMENT
-		canMove = true;
-		thrust = 0;
-		rotationalThrust = 300;
-		direction = FlxVector.get(1, 1);
-		body.max_velocity_length = MAX_VELOCITY;
-		body.max_rotational_velocity = MAX_ROTATIONAL_VELOCITY;
-		body.rotational_drag = 50;
-
-		/// POSITION
-		body.x = _x;
-		body.y = _y;
 	}
 
 	override function update(elapsed:Float) {
