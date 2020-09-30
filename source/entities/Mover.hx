@@ -55,11 +55,19 @@ class Mover extends Fixed {
 	public function new() {
 		super();
 		direction = FlxVector.get(0, 0);
-		canMove = true;
 	}
 
 	override function init(_x:Float, _y:Float, _radius:Int, _color:FlxColor) {
 		super.init(_x, _y, _radius, _color);
+
+		/// MOVEMENT
+		canMove = true;
+		thrust = 0;
+		rotationalThrust = 300;
+		direction = FlxVector.get(1, 1);
+		body.max_velocity_length = MAX_VELOCITY;
+		body.max_rotational_velocity = MAX_ROTATIONAL_VELOCITY;
+		body.rotational_drag = 50;
 
 		/// TRAIL: basic trail characteristics, to be customized in subclasses
 		trailColor = FlxColor.WHITE;
