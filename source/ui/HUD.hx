@@ -24,7 +24,7 @@ class HUD extends FlxTypedGroup<FlxSprite> {
 	var barWidth:Int;
 
 	var player:Player;
-	var actors:FlxTypedGroup<Mover>;
+	var actors:FlxTypedGroup<Thruster>;
 
 	var nOfInfected:Int;
 

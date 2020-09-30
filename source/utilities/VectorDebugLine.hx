@@ -1,25 +1,25 @@
 package utilities;
 
 import flixel.util.FlxColor;
-import entities.Mover;
+import entities.Thruster;
 import flixel.FlxSprite;
 
 class VectorDebugLine extends FlxSprite {
-	var moverRef:Mover;
+	var ThrusterRef:Thruster;
 
-	public function new(_moverRef:Mover, _color:FlxColor) {
+	public function new(_ThrusterRef:Thruster, _color:FlxColor) {
 		super();
-		moverRef = _moverRef;
+		ThrusterRef = _ThrusterRef;
 		color = _color;
 	}
 
 	override function update(elapsed:Float) {
 		super.update(elapsed);
 
-		if (moverRef.direction.length > 0) {
-			makeGraphic(Std.int(moverRef.direction.length), 1, color).setPosition(moverRef.getMidpoint().x, moverRef.getMidpoint().y);
+		if (ThrusterRef.direction.length > 0) {
+			makeGraphic(Std.int(ThrusterRef.direction.length), 1, color).setPosition(ThrusterRef.getMidpoint().x, ThrusterRef.getMidpoint().y);
 			origin.x = 0;
-			angle = moverRef.direction.degrees;
+			angle = ThrusterRef.direction.degrees;
 		}
 	}
 }

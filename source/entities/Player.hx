@@ -6,7 +6,7 @@ import flixel.FlxG;
 
 using utilities.FlxEcho;
 
-class Player extends Mover {
+class Player extends Thruster {
 	/// CONTROLS
 	var pressPosition:FlxVector; // where the user is pressing on the screen
 
@@ -16,6 +16,8 @@ class Player extends Mover {
 
 	override function init(_x:Float, _y:Float, _radius:Int, _color:FlxColor) {
 		super.init(_x, _y, _radius, _color);
+
+		body.mass = 1.3;
 
 		/// GRAPHICS
 		loadGraphic("assets/images/characters/ship/alien.png", true, 16, 26);
@@ -45,11 +47,6 @@ class Player extends Mover {
 	function handleInput() {
 		direction.set(getPosition().x, getPosition().y);
 
-		/*
-			var normDirection = direction.negate();
-			FlxG.camera.zoom = normDirection.length;
-		 */
-
 		#if (desktop || web)
 		if (FlxG.mouse.pressed) {
 			isThrusting = true;
@@ -73,6 +70,21 @@ class Player extends Mover {
 	function handleAnimations() {
 		if (isThrusting) {
 			animation.play("thrustStraight");
+
+			if (body.velocity.x >= 80) {
+				animation.play("thrustSlightRight");
+
+				if (body.velocity.x >= 150) {
+					animation.play("thrustFullRight");
+				}
+			}
+			if (body.velocity.x <= -80) {
+				animation.play("thrustSlightLeft");
+
+				if (body.velocity.x <= -150) {
+					animation.play("thrustFullLeft");
+				}
+			}
 		} else {
 			animation.play("stillStraight");
 		}

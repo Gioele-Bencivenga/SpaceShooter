@@ -15,7 +15,10 @@ import flixel.FlxSprite;
 
 using utilities.FlxEcho;
 
-class Mover extends Fixed {
+/**
+ * An entity that can thrust and move in a missile-like fashion in a direction opposite to the mouse.
+ */
+class Thruster extends Fixed {
 	/// CONSTANTS
 	public static inline final MAX_VELOCITY = 200;
 	public static inline final MAX_ROTATIONAL_VELOCITY = 500;
@@ -23,24 +26,24 @@ class Mover extends Fixed {
 	/// CONTROL FLAGS
 
 	/**
-	 * Whether the mover can move or not
+	 * Whether the Thruster can move or not
 	 */
 	var canMove:Bool = false;
 
 	/**
-	 * Whether the mover is applying thrust (trying to move) or not
+	 * Whether the Thruster is applying thrust (trying to move) or not
 	 */
 	var isThrusting:Bool = false;
 
 	/**
-	 * The direction from this mover to where we are pressing
+	 * The direction from this Thruster to where we are pressing
 	 */
 	public var direction(default, null):FlxVector;
 
 	/// MOVEMENT
 
 	/**
-	 * Movers already thrust with the value of `direction.length`, this is thrust additional to that.
+	 * Thrusters already thrust with the value of `direction.length`, this is thrust additional to that.
 	 */
 	var thrust:Int;
 
@@ -61,6 +64,7 @@ class Mover extends Fixed {
 		super.init(_x, _y, _radius, _color);
 
 		/// MOVEMENT
+		body.mass = 1;
 		canMove = true;
 		thrust = 0;
 		rotationalThrust = 300;
@@ -131,12 +135,14 @@ class Mover extends Fixed {
 			color: new FlxRangeBounds(FlxColor.WHITE, FlxColor.YELLOW, FlxColor.ORANGE, FlxColor.RED),
 			alpha: new FlxRangeBounds(1.0, 1.0, 0, 0.1),
 			scale: new FlxPointRangeBounds(0, 0, 3, 3, 13, 13, 20, 20),
-			amount: 6,
+			amount: 5,
 			lifespan: trailLifeSpan,
 			lifespanDrift: 0.01,
 			velocity: Vector2.fromPolar((Math.PI / 180) * (body.rotation + 180 + randAngle), 300 + direction.length),
 			velocityDrift: new FlxRange(-20.0, 20.0),
-			rotational_velocity: new FlxRange(-500.0, 500.0)
+			rotational_velocity: new FlxRange(-500.0, 500.0),
+			bodyDrag: 500,
+			dragDrift: 500,
 		});
 	}
 }

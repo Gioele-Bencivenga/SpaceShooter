@@ -36,16 +36,19 @@ class Fixed extends FlxSprite {
 				type: POLYGON,
 				sides: 5,
 				offset_x: 2,
-				radius: _radius,
-				rotation: 50, // why doesn't this work?
+				radius: _radius
 			},
 			rotation: -90,
-			mass: 1
+			mass: 0
 		});
 		body = this.get_body();
 
 		/// POSITION
 		body.x = _x;
 		body.y = _y;
+	}
+
+	override function update(elapsed:Float) {
+		super.update(elapsed);
 	}
 }

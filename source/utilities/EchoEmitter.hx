@@ -20,11 +20,6 @@ class EchoEmitter extends FlxTypedGroup<EchoParticle> {
 	var new_particle:Void->EchoParticle;
 
 	/**
-	 * The number of particles we want to `fire()`.
-	 */
-	var amount:Int;
-
-	/**
 	 * Creates a new particle emitter
 	 * @param new_particle	a function that returns the desired Particle
 	 */
