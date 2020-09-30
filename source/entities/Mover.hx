@@ -54,6 +54,8 @@ class Mover extends Fixed {
 
 	public function new() {
 		super();
+		direction = FlxVector.get(0, 0);
+		canMove = true;
 	}
 
 	override function init(_x:Float, _y:Float, _radius:Int, _color:FlxColor) {
