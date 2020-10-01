@@ -1,13 +1,12 @@
 package entities;
 
-import states.PlayState;
 import flixel.math.FlxVector;
 import flixel.util.FlxColor;
 import flixel.FlxG;
 
 using utilities.FlxEcho;
 
-class Player extends Mover {
+class Player extends Thruster {
 	/// CONTROLS
 	var pressPosition:FlxVector; // where the user is pressing on the screen
 
@@ -18,6 +17,16 @@ class Player extends Mover {
 	override function init(_x:Float, _y:Float, _radius:Int, _color:FlxColor) {
 		super.init(_x, _y, _radius, _color);
 
+		/// BODY
+		body.clear_shapes();
+		body.create_shape({
+			type: CIRCLE,
+			sides: 5,
+			radius: _radius,
+			offset_x: 2,
+		});
+		body.mass = 1.2;
+
 		/// GRAPHICS
 		loadGraphic("assets/images/characters/ship/alien.png", true, 16, 26);
 		animation.add("stillStraight", [0], 5);
@@ -27,10 +36,6 @@ class Player extends Mover {
 		animation.add("thrustFullRight", [7, 8], 5);
 		animation.add("thrustFullLeft", [9, 10], 5);
 
-		/// TRAIL
-		trailColor = FlxColor.ORANGE;
-		trailStartScale = 1;
-		trailEndScale = 5;
 		trailLifeSpan = 0.2;
 
 		pressPosition = FlxVector.get(1, 1);
@@ -46,12 +51,7 @@ class Player extends Mover {
 	function handleInput() {
 		direction.set(getPosition().x, getPosition().y);
 
-		/*
-			var normDirection = direction.negate();
-			FlxG.camera.zoom = normDirection.length;
-		 */
-
-		#if FLX_KEYBOARD
+		#if (desktop || web)
 		if (FlxG.mouse.pressed) {
 			isThrusting = true;
 			pressPosition.set(FlxG.mouse.x, FlxG.mouse.y);
@@ -60,18 +60,35 @@ class Player extends Mover {
 			pressPosition.set(x, y);
 			isThrusting = false;
 		}
-		#else
+		#end
+		#if mobile
 		// this doesn't work properly and I don't know why
-		if (FlxG.touches.getFirst() != null) {
-			var touchInput = FlxG.touches.getFirst();
-			pressPosition.set(touchInput.getScreenPosition().x, touchInput.getScreenPosition().y);
-		}
+		if (FlxTouchManager.get)
+			if (FlxG.touches.getFirst() != null) {
+				var touchInput = FlxG.touches.getFirst();
+				pressPosition.set(touchInput.getScreenPosition().x, touchInput.getScreenPosition().y);
+			}
 		#end
 	}
 
 	function handleAnimations() {
 		if (isThrusting) {
 			animation.play("thrustStraight");
+
+			if (body.velocity.x >= 80) {
+				animation.play("thrustSlightRight");
+
+				if (body.velocity.x >= 150) {
+					animation.play("thrustFullRight");
+				}
+			}
+			if (body.velocity.x <= -80) {
+				animation.play("thrustSlightLeft");
+
+				if (body.velocity.x <= -150) {
+					animation.play("thrustFullLeft");
+				}
+			}
 		} else {
 			animation.play("stillStraight");
 		}

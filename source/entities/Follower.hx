@@ -6,8 +6,8 @@ import flixel.util.FlxTimer;
 import flixel.FlxG;
 import flixel.util.FlxColor;
 
-class Follower extends Mover {
-	var parent:Mover;
+class Follower extends Thruster {
+	var parent:Thruster;
 
 	var maxDistanceFromPoint:Float;
 
@@ -25,8 +25,8 @@ class Follower extends Mover {
 		maxDistanceFromPoint = _maxDistanceFromPoint;
 	}
 
-	override function init(_x:Float, _y:Float, _width:Int, _height:Int, _color:FlxColor) {
-		super.init(_x, _y, _width, _height, _color);
+	override function init(_x:Float, _y:Float, _radius:Int, _color:FlxColor) {
+		super.init(_x, _y, _radius, _color);
 
 		minOffsetX = minOffsetY = -150;
 		maxOffsetX = maxOffsetY = 150;
@@ -41,7 +41,7 @@ class Follower extends Mover {
 		followParent();
 	}
 
-	public function assignParent(_parent:Mover) {
+	public function assignParent(_parent:Thruster) {
 		parent = _parent;
 		updateOffsets();
 	}
@@ -65,7 +65,7 @@ class Follower extends Mover {
 		}
 	}
 
-	// followers don't move like movers do
+	// followers don't move like Thrusters do
 	override function handleMovement() {}
 
 	private function updateOffsets() {
