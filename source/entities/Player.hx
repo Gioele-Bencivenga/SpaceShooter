@@ -17,7 +17,15 @@ class Player extends Thruster {
 	override function init(_x:Float, _y:Float, _radius:Int, _color:FlxColor) {
 		super.init(_x, _y, _radius, _color);
 
-		body.mass = 1.3;
+		/// BODY
+		body.clear_shapes();
+		body.create_shape({
+			type: POLYGON,
+			sides: 5,
+			radius: _radius,
+			offset_x: 2,
+		});
+		body.mass = 1.2;
 
 		/// GRAPHICS
 		loadGraphic("assets/images/characters/ship/alien.png", true, 16, 26);

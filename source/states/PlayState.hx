@@ -85,9 +85,19 @@ class PlayState extends FlxState {
 		/// ENTITIES
 		map.loadEntities(loadEntity, "entities");
 
+		// why doesn't this turrent appear?
 		var turret = new Turret(1);
-		turret.init(player.x + 20, player.y + 10, 10, FlxColor.RED);
+		turret.init(player.x + 20, player.y - 50, 10, FlxColor.RED);
 		turret.add_to_group(fixeds);
+		turret.setPosition(player.x, player.y);
+
+		// missiles
+		for (i in 0...3) {
+			var missile = new Missile();
+			missile.init(player.body.x - 50, player.body.y - 70, 5, FlxColor.RED);
+			missile.assignTarget(player);
+			missile.add_to_group(thrusters);
+		}
 
 		// followers
 		/*
@@ -104,18 +114,11 @@ class PlayState extends FlxState {
 		// follower.add_to_group(followers);
 		// follower.assignParent(player);
 
-		// missiles
-		for (i in 0...3) {
-			var missile = new Missile();
-			missile.init(player.body.x + 20, player.body.y + 10, 5, FlxColor.RED);
-			missile.assignTarget(player);
-			missile.add_to_group(thrusters);
-		}
-
 		/// COLLISIONS
 		// followers.listen(terrainTiles);
 		thrusters.listen(terrainTiles);
 		thrusters.listen(thrusters);
+		fixeds.listen(terrainTiles);
 		// trailParticles.listen(terrainTiles); // gives the error "Unable to get property 'length' of undefined or null reference"
 		// emitter.listen(terrainTiles); // gives the error "Unable to get property 'length' of undefined or null reference"
 

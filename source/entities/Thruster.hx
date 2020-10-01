@@ -1,17 +1,13 @@
 package entities;
 
 import flixel.util.helpers.FlxPointRangeBounds;
-import flixel.math.FlxRandom;
 import flixel.util.helpers.FlxRange;
 import flixel.util.helpers.FlxRangeBounds;
 import flixel.FlxG;
-import echo.data.Options.ShapeOptions;
 import states.PlayState;
 import flixel.math.FlxVector;
 import flixel.util.FlxColor;
-import echo.Body;
 import hxmath.math.Vector2;
-import flixel.FlxSprite;
 
 using utilities.FlxEcho;
 
