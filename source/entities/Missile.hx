@@ -1,7 +1,5 @@
 package entities;
 
-import echo.shape.Polygon;
-import openfl.display.Shape;
 import flixel.FlxG;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
@@ -22,10 +20,6 @@ class Missile extends Thruster {
 
 		makeGraphic(_radius, _radius * 2, _color);
 
-		///TRAIL
-		trailColor = FlxColor.RED;
-		trailStartScale = 1;
-		trailEndScale = 3;
 		trailLifeSpan = 0.1;
 
 		/// STATS

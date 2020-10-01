@@ -20,7 +20,7 @@ class Player extends Thruster {
 		/// BODY
 		body.clear_shapes();
 		body.create_shape({
-			type: POLYGON,
+			type: CIRCLE,
 			sides: 5,
 			radius: _radius,
 			offset_x: 2,
@@ -36,10 +36,6 @@ class Player extends Thruster {
 		animation.add("thrustFullRight", [7, 8], 5);
 		animation.add("thrustFullLeft", [9, 10], 5);
 
-		/// TRAIL
-		trailColor = FlxColor.ORANGE;
-		trailStartScale = 1;
-		trailEndScale = 5;
 		trailLifeSpan = 0.2;
 
 		pressPosition = FlxVector.get(1, 1);

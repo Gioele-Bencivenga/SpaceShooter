@@ -1,5 +1,6 @@
 package entities;
 
+import flixel.FlxSprite;
 import flixel.util.helpers.FlxPointRangeBounds;
 import flixel.util.helpers.FlxRange;
 import flixel.util.helpers.FlxRangeBounds;
@@ -14,18 +15,7 @@ using utilities.FlxEcho;
 /**
  * An entity that can thrust and move in a missile-like fashion in a direction opposite to the mouse.
  */
-class Thruster extends Fixed {
-	/// CONSTANTS
-	public static inline final MAX_VELOCITY = 200;
-	public static inline final MAX_ROTATIONAL_VELOCITY = 500;
-
-	/// CONTROL FLAGS
-
-	/**
-	 * Whether the Thruster can move or not
-	 */
-	var canMove:Bool = false;
-
+class Thruster extends Entity {
 	/**
 	 * Whether the Thruster is applying thrust (trying to move) or not
 	 */
@@ -36,85 +26,77 @@ class Thruster extends Fixed {
 	 */
 	public var direction(default, null):FlxVector;
 
-	/// MOVEMENT
-
 	/**
 	 * Thrusters already thrust with the value of `direction.length`, this is thrust additional to that.
 	 */
 	var thrust:Int;
 
+	/**
+	 * rotational thrust that is applied when the thruster is not facing where it should
+	 */
 	var rotationalThrust:Int;
 
-	/// TRAIL
-	var trailColor:FlxColor;
-	var trailStartScale:Float;
-	var trailEndScale:Float;
 	var trailLifeSpan:Float;
 
 	public function new() {
 		super();
-		direction = FlxVector.get(0, 0);
 	}
 
 	override function init(_x:Float, _y:Float, _radius:Int, _color:FlxColor) {
 		super.init(_x, _y, _radius, _color);
 
+		/// STATS
+		health = 20;
+
 		/// MOVEMENT
-		body.mass = 1;
 		canMove = true;
 		thrust = 0;
 		rotationalThrust = 300;
 		direction = FlxVector.get(1, 1);
-		body.max_velocity_length = MAX_VELOCITY;
-		body.max_rotational_velocity = MAX_ROTATIONAL_VELOCITY;
-		body.rotational_drag = 50;
 
 		/// TRAIL: basic trail characteristics, to be customized in subclasses
-		trailColor = FlxColor.WHITE;
-		trailStartScale = 6;
-		trailEndScale = 15;
 		trailLifeSpan = 0.3;
 	}
 
 	override function update(elapsed:Float) {
 		super.update(elapsed);
 
-		handleMovement();
+		if (canMove) {
+			handleMovement();
+		} else {}
 	}
 
 	function handleMovement() {
 		if (isThrusting) {
-			if (canMove) {
-				var rotationVect = FlxVector.get(1, 1);
-				rotationVect.degrees = body.rotation - 0; // -180 for making the player follow the mouse?
+			var rotationVect = FlxVector.get(1, 1);
+			rotationVect.degrees = body.rotation - 0; // -180 for making the player follow the mouse?
 
-				var distanceFromTargetAngle = rotationVect.crossProductLength(direction);
-				// should we rotate left or right towards the mouse?
-				if (distanceFromTargetAngle > 0) {
-					body.rotational_velocity = rotationalThrust / 4;
-					if (distanceFromTargetAngle > 35) {
-						body.rotational_velocity = rotationalThrust / 2;
-						if (distanceFromTargetAngle > 80) {
-							body.rotational_velocity = rotationalThrust;
-						}
+			var distanceFromTargetAngle = rotationVect.crossProductLength(direction);
+			// should we rotate left or right towards the mouse?
+			if (distanceFromTargetAngle > 0) {
+				body.rotational_velocity = rotationalThrust / 4;
+				if (distanceFromTargetAngle > 35) {
+					body.rotational_velocity = rotationalThrust / 2;
+					if (distanceFromTargetAngle > 80) {
+						body.rotational_velocity = rotationalThrust;
 					}
-				} else if (distanceFromTargetAngle < 0) {
-					body.rotational_velocity = -rotationalThrust / 4;
-					if (distanceFromTargetAngle < -35) {
-						body.rotational_velocity = -rotationalThrust / 2;
-						if (distanceFromTargetAngle < -80) {
-							body.rotational_velocity = -rotationalThrust;
-						}
-					}
-				} else {
-					body.rotational_velocity = 0;
 				}
-
-				var actualDir = Vector2.fromPolar((Math.PI / 180) * body.rotation, direction.length * 2 + thrust);
-				body.acceleration.set(actualDir.x, actualDir.y);
-
-				shootTrail();
+			} else if (distanceFromTargetAngle < 0) {
+				body.rotational_velocity = -rotationalThrust / 4;
+				if (distanceFromTargetAngle < -35) {
+					body.rotational_velocity = -rotationalThrust / 2;
+					if (distanceFromTargetAngle < -80) {
+						body.rotational_velocity = -rotationalThrust;
+					}
+				}
+			} else {
+				body.rotational_velocity = 0;
 			}
+
+			var actualDir = Vector2.fromPolar((Math.PI / 180) * body.rotation, direction.length * 2 + thrust);
+			body.acceleration.set(actualDir.x, actualDir.y);
+
+			shootTrail();
 		} else {
 			body.acceleration.set(0, 0); // we need to set acceleration to 0 when not thrusting otherwise we'll keep accelerating
 		}

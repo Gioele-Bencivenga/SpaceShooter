@@ -27,8 +27,7 @@ class PlayState extends FlxState {
 	var foregroundLayer:FlxTilemap; // stuff displayed in front of everything else (also in front of entities)
 
 	/// GROUPS
-	public static var thrusters:FlxGroup;
-	public static var fixeds:FlxGroup;
+	public static var entities:FlxGroup;
 	public static var followers:FlxGroup;
 	public static var terrainTiles:FlxGroup;
 	public static var trailParticles:FlxGroup;
@@ -43,8 +42,7 @@ class PlayState extends FlxState {
 
 	override public function create() {
 		/// GROUPS
-		thrusters = new FlxGroup();
-		fixeds = new FlxGroup();
+		entities = new FlxGroup();
 		followers = new FlxGroup();
 		terrainTiles = new FlxGroup();
 		trailParticles = new FlxGroup();
@@ -63,8 +61,7 @@ class PlayState extends FlxState {
 		});
 		add(emitter);
 		add(followers);
-		add(fixeds);
-		add(thrusters);
+		add(entities);
 
 		// First thing we want to do before creating any physics objects is init() our Echo world.
 		FlxEcho.init({
@@ -85,19 +82,15 @@ class PlayState extends FlxState {
 		/// ENTITIES
 		map.loadEntities(loadEntity, "entities");
 
-		// why doesn't this turrent appear?
-		var turret = new Turret(1);
-		turret.init(player.x + 20, player.y - 50, 10, FlxColor.RED);
-		turret.add_to_group(fixeds);
-		turret.setPosition(player.x, player.y);
-
-		// missiles
-		for (i in 0...3) {
-			var missile = new Missile();
-			missile.init(player.body.x - 50, player.body.y - 70, 5, FlxColor.RED);
-			missile.assignTarget(player);
-			missile.add_to_group(thrusters);
-		}
+		/*
+			// missiles
+			for (i in 0...3) {
+				var missile = new Missile();
+				missile.init(player.body.x - 50, player.body.y - 70, 5, FlxColor.RED);
+				missile.assignTarget(player);
+				missile.add_to_group(entities);
+			}
+		 */
 
 		// followers
 		/*
@@ -109,16 +102,9 @@ class PlayState extends FlxState {
 			}
 		 */
 
-		// var follower = new Follower(10);
-		// follower.init(player.body.x - 5, player.body.y - 5, 7, 7, FlxColor.YELLOW);
-		// follower.add_to_group(followers);
-		// follower.assignParent(player);
-
 		/// COLLISIONS
-		// followers.listen(terrainTiles);
-		thrusters.listen(terrainTiles);
-		thrusters.listen(thrusters);
-		fixeds.listen(terrainTiles);
+		entities.listen(terrainTiles);
+		entities.listen(entities);
 		// trailParticles.listen(terrainTiles); // gives the error "Unable to get property 'length' of undefined or null reference"
 		// emitter.listen(terrainTiles); // gives the error "Unable to get property 'length' of undefined or null reference"
 
@@ -130,10 +116,6 @@ class PlayState extends FlxState {
 		FlxG.camera.follow(player, FlxCameraFollowStyle.LOCKON);
 		FlxG.camera.zoom = 2;
 
-		/// DEBUG
-		// follDebugLine = new VectorDebugLine(follower, FlxColor.GRAY);
-		// add(follDebugLine);
-
 		super.create();
 	}
 
@@ -141,8 +123,8 @@ class PlayState extends FlxState {
 		switch (entity.name) {
 			case "player":
 				player = new Player();
-				player.init(entity.x, entity.y, 7, FlxColor.CYAN);
-				player.add_to_group(thrusters);
+				player.init(entity.x, entity.y, 6, FlxColor.CYAN);
+				player.add_to_group(entities);
 		}
 	}
 

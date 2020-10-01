@@ -56,7 +56,8 @@ class HUD extends FlxTypedGroup<FlxSprite> {
 		 */
 
 		txtHealth = new FlxText((FlxG.width / 2), background.y + 5, 0, "HP: 30 / 30", 25);
-		txtHealth.setPosition(txtHealth.x - (txtHealth.width / 2), txtHealth.y);
+		// for long text txtHealth = new FlxText(0, background.y + 5, 0, "HP: 30 / 30", 25);
+		txtHealth.setPosition(txtHealth.x, txtHealth.y);
 		txtHealth.setBorderStyle(SHADOW, FlxColor.BLACK, 1);
 		add(txtHealth);
 
@@ -93,7 +94,7 @@ class HUD extends FlxTypedGroup<FlxSprite> {
 	}
 
 	public function updateHUD() {
-		txtHealth.text = 'direction length: ${player.direction.length}, normal: ${player.direction.normalize().length}';
+		txtHealth.text = 'x: ${} y: ${}';
 
 		// txtDeaths.text = 'INFECTED: ${nOfInfected}, DEATHS: ${PlayState.deadCount}';
 
