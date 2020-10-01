@@ -20,8 +20,6 @@ class Missile extends Thruster {
 
 		makeGraphic(_radius, _radius * 2, _color);
 
-		trailLifeSpan = 0.1;
-
 		/// STATS
 		thrust = 250;
 		rotationalThrust = 150;

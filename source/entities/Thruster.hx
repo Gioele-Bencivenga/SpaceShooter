@@ -36,8 +36,6 @@ class Thruster extends Entity {
 	 */
 	var rotationalThrust:Int;
 
-	var trailLifeSpan:Float;
-
 	public function new() {
 		super();
 	}
@@ -53,9 +51,6 @@ class Thruster extends Entity {
 		thrust = 0;
 		rotationalThrust = 300;
 		direction = FlxVector.get(1, 1);
-
-		/// TRAIL: basic trail characteristics, to be customized in subclasses
-		trailLifeSpan = 0.3;
 	}
 
 	override function update(elapsed:Float) {
@@ -103,24 +98,25 @@ class Thruster extends Entity {
 	}
 
 	function shootTrail() {
-		var trailPosition = body.get_position();
-		var randAngle = FlxG.random.int(-10, 10);
+		var normDir = Vector2.fromPolar((Math.PI / 180) * body.rotation, 10);
+		var trailPosition = body.get_position().subtractWith(normDir);
+		var randAngle = FlxG.random.int(-15, 15);
 
 		PlayState.emitter.fire({
 			position: trailPosition,
 			posDriftX: new FlxRange(-0.5, 0.5),
 			posDriftY: new FlxRange(-0.5, 0.5),
 			color: new FlxRangeBounds(FlxColor.WHITE, FlxColor.YELLOW, FlxColor.ORANGE, FlxColor.RED),
-			alpha: new FlxRangeBounds(1.0, 1.0, 0, 0.1),
+			alpha: new FlxRangeBounds(1.0, 1.0, 0.2, 0.4),
 			scale: new FlxPointRangeBounds(0, 0, 3, 3, 13, 13, 20, 20),
-			amount: 5,
-			lifespan: trailLifeSpan,
-			lifespanDrift: 0.01,
-			velocity: Vector2.fromPolar((Math.PI / 180) * (body.rotation + 180 + randAngle), 300 + direction.length),
-			velocityDrift: new FlxRange(-20.0, 20.0),
+			amount: 2,
+			lifespan: 0.4,
+			lifespanDrift: 0.1,
+			velocity: Vector2.fromPolar((Math.PI / 180) * (body.rotation + 180 + randAngle), 20 + direction.length / 2),
+			velocityDrift: new FlxRange(-15.0, 15.0),
 			rotational_velocity: new FlxRange(-500.0, 500.0),
-			bodyDrag: 500,
-			dragDrift: 500,
+			bodyDrag: 600,
+			dragDrift: 200,
 		});
 	}
 }

@@ -36,8 +36,6 @@ class Player extends Thruster {
 		animation.add("thrustFullRight", [7, 8], 5);
 		animation.add("thrustFullLeft", [9, 10], 5);
 
-		trailLifeSpan = 0.2;
-
 		pressPosition = FlxVector.get(1, 1);
 	}
 

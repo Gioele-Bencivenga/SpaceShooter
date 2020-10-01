@@ -78,10 +78,10 @@ class EchoParticle extends FlxSprite {
 		this.add_body({
 			shape: {
 				type: RECT,
-				height: 10,
-				width: 10,
+				height: 5,
+				width: 5,
 			},
-			mass: 1,
+			mass: 0.3,
 			gravity_scale: 0,
 		});
 
@@ -132,9 +132,9 @@ class EchoParticle extends FlxSprite {
 		}
 
 		if (options.lifespan != null) {
-			if (options.lifespanDrift != null) {
-				options.lifespan += FlxG.random.float(-options.lifespanDrift, options.lifespanDrift);
-			}
+			//if (options.lifespanDrift != null) {
+			//	options.lifespan += FlxG.random.float(-options.lifespanDrift, options.lifespanDrift);
+			//}
 
 			lifespan = options.lifespan;
 		}
@@ -212,10 +212,6 @@ class EchoParticle extends FlxSprite {
 	}
 
 	override function destroy() {
-		if (scale != null) {
-			// scale = null;
-		}
-
 		if (scaleRange != null) {
 			scaleRange.start = FlxDestroyUtil.put(scaleRange.start);
 			scaleRange.end = FlxDestroyUtil.put(scaleRange.end);
