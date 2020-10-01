@@ -25,7 +25,9 @@ import flixel.system.ui.FlxSystemButton;
 import openfl.display.BitmapData;
 #end
 
-// thanks to @austineast and @01010111 for this! from https://gist.github.com/AustinEast/524db026a4fea298a0eebf19459131cc
+/**
+ * thanks to @austineast and @01010111 for this! from https://gist.github.com/AustinEast/524db026a4fea298a0eebf19459131cc
+ */
 class FlxEcho extends FlxBasic {
 	/**
 	 * Gets the FlxEcho instance, which contains the current Echo World. May be Null if `FlxEcho.init` has not been called.
@@ -116,17 +118,9 @@ class FlxEcho extends FlxBasic {
 	}
 
 	/**
-	 * Associates a FlxGroup to a physics group
-	 */
-	public static function add_group_bodies(group:FlxGroup) {
-		if (!instance.groups.exists(group))
-			instance.groups.set(group, []);
-	}
-
-	/**
 	 * Adds FlxObject to FlxGroup, and the FlxObject's associated physics body to the FlxGroup's associated physics group
 	 */
-	public static function add_to_group(object:FlxObject, group:FlxGroup) {
+	public inline static function add_to_group(object:FlxObject, group:FlxGroup) {
 		group.add(object);
 		if (!instance.groups.exists(group))
 			instance.groups.set(group, []);
@@ -158,14 +152,23 @@ class FlxEcho extends FlxBasic {
 			return true;
 		}
 		#end
-		instance.world.listen(!a.is(FlxObject) ? instance.groups[cast a] : instance.bodies[cast a],
-			!b.is(FlxObject) ? instance.groups[cast b] : instance.bodies[cast b], options);
+
+		var a_is_object = a.is(FlxObject);
+		var b_is_object = b.is(FlxObject);
+
+		if (!a_is_object)
+			add_group_bodies(cast a);
+		if (!b_is_object)
+			add_group_bodies(cast b);
+
+		instance.world.listen(!a_is_object ? instance.groups[cast a] : instance.bodies[cast a],
+			!b_is_object ? instance.groups[cast b] : instance.bodies[cast b], options);
 	}
 
 	/**
 	 * Get the physics body associated with a FlxObject
 	 */
-	public static function get_body(object:FlxObject):Body
+	public static inline function get_body(object:FlxObject):Body
 		return instance.bodies[object];
 
 	public static function set_body(object:FlxObject, body:Body):Body {
@@ -217,44 +220,53 @@ class FlxEcho extends FlxBasic {
 	}
 
 	/**
+	 * Associates a FlxGroup to a physics group
+	 */
+	public static inline function add_group_bodies(group:FlxGroup) {
+		if (!instance.groups.exists(group))
+			instance.groups.set(group, []);
+	}
+
+	/**
 	 * Gets a FlxGroup's associated physics group
 	 */
-	public static function get_group_bodies(group:FlxGroup):Null<Array<Body>> {
+	public static inline function get_group_bodies(group:FlxGroup):Null<Array<Body>> {
 		return instance.groups.get(group);
 	}
 
 	/**
 	 * Removes the FlxGroup's associated physics group from the simulation
 	 */
-	public static function remove_group_bodies(group:FlxGroup) {
+	public static inline function remove_group_bodies(group:FlxGroup) {
 		return instance.groups.remove(group);
 	}
 
 	/**
 	 * Removes the FlxObject from the FlxGroup, and the FlxObject's associated physics body from the FlxGroup's associated physics group
 	 */
-	public static function remove_from_group(object:FlxObject, group:FlxGroup):Bool {
+	public static inline function remove_from_group(object:FlxObject, group:FlxGroup):Bool {
 		group.remove(object);
 		if (!instance.groups.exists(group) || !instance.bodies.exists(object))
 			return false;
 		return instance.groups[group].remove(instance.bodies[object]);
 	}
 
-	static function update_body_object(object:FlxObject, body:Body) {
+	static inline function update_body_object(object:FlxObject, body:Body) {
 		object.setPosition(body.x, body.y);
 		if (object.isOfType(FlxSprite)) {
 			var sprite:FlxSprite = cast object;
 			sprite.x -= sprite.origin.x;
 			sprite.y -= sprite.origin.y;
 		}
-		object.angle = body.rotation + 90;
+		object.angle = body.rotation + 90; // +90 to have upright sprites stay upright
 		if (reset_acceleration)
 			body.acceleration.set(0, 0);
 	}
 
-	static function set_touching(object:FlxObject, touching:Int)
+	static inline function set_touching(object:FlxObject, touching:Int) {
 		if (object.touching & touching == 0)
 			object.touching += touching;
+	}
 
 	static function square_normal(normal:Vector2) {
 		var len = normal.length;

@@ -82,15 +82,13 @@ class PlayState extends FlxState {
 		/// ENTITIES
 		map.loadEntities(loadEntity, "entities");
 
-		/*
-			// missiles
-			for (i in 0...3) {
-				var missile = new Missile();
-				missile.init(player.body.x - 50, player.body.y - 70, 5, FlxColor.RED);
-				missile.assignTarget(player);
-				missile.add_to_group(entities);
-			}
-		 */
+		// missiles
+		for (i in 0...3) {
+			var missile = new Missile();
+			missile.init(player.body.x - 50, player.body.y - 70, 5, FlxColor.RED);
+			missile.assignTarget(player);
+			missile.add_to_group(entities);
+		}
 
 		// followers
 		/*
@@ -105,8 +103,8 @@ class PlayState extends FlxState {
 		/// COLLISIONS
 		entities.listen(terrainTiles);
 		entities.listen(entities);
-		// trailParticles.listen(terrainTiles); // gives the error "Unable to get property 'length' of undefined or null reference"
-		// emitter.listen(terrainTiles); // gives the error "Unable to get property 'length' of undefined or null reference"
+		emitter.listen(terrainTiles);
+		emitter.listen(entities);
 
 		/// HUD
 		var hud = new HUD(player);

@@ -75,8 +75,15 @@ class EchoParticle extends FlxSprite {
 		super();
 		exists = false;
 
-		this.add_body();
-		this.get_body().gravity_scale = 0;
+		this.add_body({
+			shape: {
+				type: RECT,
+				height: 10,
+				width: 10,
+			},
+			mass: 1,
+			gravity_scale: 0,
+		});
 
 		makeGraphic(1, 1, FlxColor.WHITE);
 
@@ -206,7 +213,7 @@ class EchoParticle extends FlxSprite {
 
 	override function destroy() {
 		if (scale != null) {
-			//scale = null;
+			// scale = null;
 		}
 
 		if (scaleRange != null) {
