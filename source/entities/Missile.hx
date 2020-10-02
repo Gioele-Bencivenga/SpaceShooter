@@ -1,11 +1,12 @@
 package entities;
 
+import flixel.util.helpers.FlxPointRangeBounds;
 import flixel.FlxG;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 
 class Missile extends Thruster {
-	var target:Thruster;
+	var target:Entity;
 
 	var offsetX:Int; // actual offset on the X axis
 	var minOffsetX:Int; // minimum random offset on the X axis
@@ -18,18 +19,27 @@ class Missile extends Thruster {
 	override function init(_x:Float, _y:Float, _radius:Int, _color:FlxColor) {
 		super.init(_x, _y, _radius, _color);
 
-		makeGraphic(_radius, _radius * 2, _color);
+		/// GRAPHICS
+		loadGraphic("assets/images/weapons/missile/thrustStraight.png", true, 16, 26);
+		// animation.add("stillStraight", [0], 5);
+		animation.add("thrustStraight", [1, 2], 5);
 
 		/// STATS
 		thrust = 250;
 		rotationalThrust = 150;
 
+		/// TRAIL
+		trailPosDrift = 5;
+		trailScale = new FlxPointRangeBounds(1, 1, 5, 5, 7, 7, 12, 12);
+		trailLifespan = 0.1;
+
 		/// BODY
 		body.clear_shapes();
 		body.create_shape({
 			type: RECT,
-			height: _radius,
-			width: _radius * 2
+			height: _radius * 2,
+			width: _radius * 3,
+			offset_x: 2,
 		});
 
 		body.max_velocity_length += 10;
@@ -49,7 +59,7 @@ class Missile extends Thruster {
 		}
 	}
 
-	public function assignTarget(_target:Thruster) {
+	public function assignTarget(_target:Entity) {
 		target = _target;
 		updateOffsets();
 	}
@@ -71,5 +81,12 @@ class Missile extends Thruster {
 		super.update(elapsed);
 
 		followTarget();
+		handleAnimations();
+	}
+
+	function handleAnimations() {
+		if (isThrusting) {
+			animation.play("thrustStraight");
+		}
 	}
 }

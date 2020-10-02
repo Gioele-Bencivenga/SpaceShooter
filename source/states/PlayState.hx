@@ -1,5 +1,6 @@
 package states;
 
+import flixel.util.FlxCollision;
 import entities.hostiles.Turret;
 import utilities.EchoEmitter;
 import echo.util.TileMap;
@@ -82,23 +83,10 @@ class PlayState extends FlxState {
 		/// ENTITIES
 		map.loadEntities(loadEntity, "entities");
 
-		// missiles
-		for (i in 0...3) {
-			var missile = new Missile();
-			missile.init(player.body.x - 50, player.body.y - 70, 5, FlxColor.RED);
-			missile.assignTarget(player);
-			missile.add_to_group(entities);
-		}
-
-		// followers
-		/*
-			for (i in 0...3) {
-				var follower = new Follower(FlxG.random.int(0, 30));
-				follower.init(player.body.x - 5, player.body.y - 5, 5, FlxColor.BROWN);
-				follower.add_to_group(followers);
-				follower.assignParent(player);
-			}
-		 */
+		var turret = new Turret(2, 1);
+		turret.init(player.body.x - 20, player.body.y - 5, 20, FlxColor.YELLOW);
+		turret.add_to_group(entities);
+		turret.assignTarget(player);
 
 		/// COLLISIONS
 		entities.listen(terrainTiles);
