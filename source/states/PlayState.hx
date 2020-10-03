@@ -102,7 +102,7 @@ class PlayState extends FlxState {
 		FlxG.camera.follow(player, FlxCameraFollowStyle.LOCKON);
 		FlxG.camera.zoom = 2;
 
-		//FlxG.fullscreen = true;
+		FlxG.fullscreen = true;
 
 		super.create();
 	}
