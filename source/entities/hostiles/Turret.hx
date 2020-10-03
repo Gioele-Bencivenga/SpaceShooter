@@ -1,5 +1,7 @@
 package entities.hostiles;
 
+import flixel.FlxG;
+import hxmath.math.Vector2;
 import states.PlayState;
 import flixel.util.FlxTimer;
 import flixel.util.FlxColor;
@@ -53,9 +55,12 @@ class Turret extends Fixed {
 	function shootMissile(_) {
 		for (i in 0...nOfShots) {
 			var missile = new Missile();
-			missile.init(body.x, body.y - radius, 5, FlxColor.RED);
+			missile.init(body.x + FlxG.random.int(-40, 40), body.y - radius, 3, FlxColor.RED);
 			missile.assignTarget(target);
 			missile.add_to_group(PlayState.entities);
+			var dir = Vector2.fromPolar((Math.PI / 180) * body.rotation + FlxG.random.int(-45, 45), 1000);
+			missile.body.velocity.set(dir.x, dir.y);
+			missile.body.rotational_velocity = FlxG.random.float(-Entity.MAX_ROTATIONAL_VELOCITY, Entity.MAX_ROTATIONAL_VELOCITY);
 		}
 	}
 
@@ -65,7 +70,7 @@ class Turret extends Fixed {
 	 */
 	public function assignTarget(_target:Entity) {
 		target = _target;
-		shootTimer.start(frequency, shootMissile, 0);
+		shootTimer.start(frequency, shootMissile, 3);
 	}
 
 	/**

@@ -78,8 +78,8 @@ class EchoParticle extends FlxSprite {
 		this.add_body({
 			shape: {
 				type: RECT,
-				height: 5,
-				width: 5,
+				height: 0.8, // we want the body to be slightly smaller than its graphics
+				width: 0.8,
 			},
 			mass: 0.3,
 			gravity_scale: 0,
@@ -94,8 +94,6 @@ class EchoParticle extends FlxSprite {
 
 	public function fire(options:FireOptions) {
 		reset(options.position.x, options.position.y);
-
-		// this.add_to_group(PlayState.trailParticles);
 
 		if (options.position != null) {
 			if (options.posDriftX != null) {
@@ -132,9 +130,9 @@ class EchoParticle extends FlxSprite {
 		}
 
 		if (options.lifespan != null) {
-			//if (options.lifespanDrift != null) {
-			//	options.lifespan += FlxG.random.float(-options.lifespanDrift, options.lifespanDrift);
-			//}
+			if (options.lifespanDrift != null) {
+				options.lifespan += FlxG.random.float(-options.lifespanDrift, options.lifespanDrift);
+			}
 
 			lifespan = options.lifespan;
 		}
@@ -151,6 +149,8 @@ class EchoParticle extends FlxSprite {
 			scaleRange.active = lifespan > 0 && !scaleRange.start.equals(scaleRange.end);
 			scale.x = scaleRange.start.x;
 			scale.y = scaleRange.start.y;
+			this.get_body().scale_x = scale.x;
+			this.get_body().scale_y = scale.y;
 		} else {
 			scaleRange.active = false;
 		}
@@ -189,7 +189,8 @@ class EchoParticle extends FlxSprite {
 				scale.x += (scaleRange.end.x - scaleRange.start.x) * delta;
 				scale.y += (scaleRange.end.y - scaleRange.start.y) * delta;
 
-				// update body here if needed
+				this.get_body().scale_x = scale.x;
+				this.get_body().scale_y = scale.y;
 			}
 
 			if (colorRange.active) {

@@ -1,5 +1,6 @@
 package entities;
 
+import flixel.util.FlxTimer;
 import flixel.FlxSprite;
 import flixel.util.helpers.FlxPointRangeBounds;
 import flixel.util.helpers.FlxRange;
@@ -40,6 +41,7 @@ class Thruster extends Entity {
 	var trailPosDrift:Float;
 	var trailScale:FlxPointRangeBounds;
 	var trailLifespan:Float;
+	var trailLifespanDrift:Float;
 
 	public function new() {
 		super();
@@ -60,7 +62,7 @@ class Thruster extends Entity {
 		/// TRAIL
 		trailPosDrift = 4;
 		trailScale = new FlxPointRangeBounds(2, 2, 5, 5, 17, 17, 20, 20);
-		trailLifespan = 0.4;
+		trailLifespan = 0.2;
 	}
 
 	override function update(elapsed:Float) {
@@ -108,7 +110,7 @@ class Thruster extends Entity {
 	}
 
 	function shootTrail() {
-		var normDir = Vector2.fromPolar((Math.PI / 180) * body.rotation, 10);
+		var normDir = Vector2.fromPolar((Math.PI / 180) * body.rotation, 9); // raius is far downwards from the body we spawn the particles
 		trailPosition = body.get_position().subtractWith(normDir);
 		var randAngle = FlxG.random.int(-15, 15);
 
@@ -117,13 +119,13 @@ class Thruster extends Entity {
 			posDriftX: new FlxRange(-trailPosDrift, trailPosDrift),
 			posDriftY: new FlxRange(-trailPosDrift, trailPosDrift),
 			color: new FlxRangeBounds(FlxColor.WHITE, FlxColor.YELLOW, FlxColor.ORANGE, FlxColor.RED),
-			alpha: new FlxRangeBounds(1.0, 1.0, 0.4, 0.6),
+			alpha: new FlxRangeBounds(1.0, 1.0, 0.5, 0.7),
 			scale: trailScale,
 			amount: 1,
 			lifespan: trailLifespan,
-			lifespanDrift: 0.1,
-			velocity: Vector2.fromPolar((Math.PI / 180) * (body.rotation + 180 + randAngle), 20 + direction.length / 2),
-			velocityDrift: new FlxRange(-15.0, 15.0),
+			lifespanDrift: trailLifespanDrift,
+			velocity: Vector2.fromPolar((Math.PI / 180) * (body.rotation + 180 + randAngle), 110 + direction.length / 2),
+			velocityDrift: new FlxRange(-30.0, 30.0),
 			rotational_velocity: new FlxRange(-500.0, 500.0),
 			bodyDrag: 600,
 			dragDrift: 200,

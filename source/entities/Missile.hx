@@ -16,22 +16,27 @@ class Missile extends Thruster {
 	var maxOffsetY:Int;
 	var offsetsUpdater:FlxTimer; // timer that updates the offsets
 
+	var activationTimer:FlxTimer;
+
 	override function init(_x:Float, _y:Float, _radius:Int, _color:FlxColor) {
 		super.init(_x, _y, _radius, _color);
 
 		/// GRAPHICS
-		loadGraphic("assets/images/weapons/missile/thrustStraight.png", true, 16, 26);
-		// animation.add("stillStraight", [0], 5);
+		loadGraphic("assets/images/weapons/missile/missile.png", true, 16, 26);
+		animation.add("stillStraight", [0], 5);
 		animation.add("thrustStraight", [1, 2], 5);
 
 		/// STATS
 		thrust = 250;
 		rotationalThrust = 150;
 
+		canMove = false;
+
 		/// TRAIL
 		trailPosDrift = 5;
 		trailScale = new FlxPointRangeBounds(1, 1, 5, 5, 7, 7, 12, 12);
 		trailLifespan = 0.1;
+		trailLifespanDrift = 0.02;
 
 		/// BODY
 		body.clear_shapes();
@@ -50,6 +55,11 @@ class Missile extends Thruster {
 		offsetsUpdater = new FlxTimer().start(3, function(_) {
 			updateOffsets();
 		}, 0);
+
+		/// TIMER
+		activationTimer = new FlxTimer().start(1.5, function(_) {
+			canMove = true;
+		});
 	}
 
 	private function updateOffsets() {
@@ -80,13 +90,18 @@ class Missile extends Thruster {
 	override function update(elapsed:Float) {
 		super.update(elapsed);
 
-		followTarget();
+		if (canMove) {
+			followTarget();
+		}
+
 		handleAnimations();
 	}
 
 	function handleAnimations() {
 		if (isThrusting) {
 			animation.play("thrustStraight");
+		} else {
+			animation.play("stillStraight");
 		}
 	}
 }

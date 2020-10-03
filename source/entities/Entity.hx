@@ -10,7 +10,7 @@ class Entity extends FlxSprite {
 	/// CONSTANTS
 	public static inline final MAX_HEALTH = 100;
 	public static inline final MAX_VELOCITY = 200;
-	public static inline final MAX_ROTATIONAL_VELOCITY = 500;
+	public static inline final MAX_ROTATIONAL_VELOCITY = 1000;
 
 	/**
 	 * Whether the Thruster can move or not
