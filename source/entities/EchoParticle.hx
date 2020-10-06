@@ -209,7 +209,7 @@ class EchoParticle extends FlxSprite {
 		super.reset(X, Y);
 		age = 0;
 
-		// visible = true; // will I need this? maybe, so it's here just in case
+		//visible = true; // will I need this? maybe, so it's here just in case
 	}
 
 	override function destroy() {
