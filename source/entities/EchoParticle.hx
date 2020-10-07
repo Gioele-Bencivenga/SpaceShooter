@@ -78,8 +78,8 @@ class EchoParticle extends FlxSprite {
 		this.add_body({
 			shape: {
 				type: RECT,
-				height: 0.8, // we want the body to be slightly smaller than its graphics
-				width: 0.8,
+				height: 0.6, // we want the body to be smaller than its graphics
+				width: 0.6,
 			},
 			mass: 0.3,
 			gravity_scale: 0,
@@ -94,6 +94,7 @@ class EchoParticle extends FlxSprite {
 
 	public function fire(options:FireOptions) {
 		reset(options.position.x, options.position.y);
+		this.get_body().active = true;
 
 		if (options.position != null) {
 			if (options.posDriftX != null) {
@@ -180,6 +181,7 @@ class EchoParticle extends FlxSprite {
 			age += elapsed;
 
 		if (age >= lifespan && lifespan != 0) {
+			this.get_body().active = false; // kill() doesn't deactivate bodies so we do it. we deactivate them instead of destroying because they get recycled
 			kill();
 		} else {
 			delta = elapsed / lifespan;
@@ -209,7 +211,7 @@ class EchoParticle extends FlxSprite {
 		super.reset(X, Y);
 		age = 0;
 
-		//visible = true; // will I need this? maybe, so it's here just in case
+		// visible = true; // will I need this? maybe, so it's here just in case
 	}
 
 	override function destroy() {

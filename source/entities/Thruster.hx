@@ -1,5 +1,6 @@
 package entities;
 
+import echo.Line;
 import flixel.util.FlxTimer;
 import flixel.FlxSprite;
 import flixel.util.helpers.FlxPointRangeBounds;
@@ -33,9 +34,19 @@ class Thruster extends Entity {
 	var thrust:Int;
 
 	/**
-	 * rotational thrust that is applied when the thruster is not facing where it should
+	 * Rotational thrust that is applied when the thruster is not facing according to player input.
 	 */
 	var rotationalThrust:Int;
+
+	/**
+	 * The number of raycasts we want to be distributed in a circle around this thruster.
+	 */
+	var raycastCount:Int;
+
+	/**
+	 * The length of the raycasts we shoot from this thruster.
+	 */
+	var raycastLength:Int;
 
 	var trailPosition:Vector2;
 	var trailPosDrift:Float;
@@ -61,8 +72,12 @@ class Thruster extends Entity {
 
 		/// TRAIL
 		trailPosDrift = 4;
-		trailScale = new FlxPointRangeBounds(2, 2, 5, 5, 17, 17, 20, 20);
+		trailScale = new FlxPointRangeBounds(4, 4, 5, 5, 17, 17, 20, 20);
 		trailLifespan = 0.2;
+
+		/// RAYCASTS
+		raycastCount = 100;
+		raycastLength = 50;
 	}
 
 	override function update(elapsed:Float) {
@@ -71,6 +86,16 @@ class Thruster extends Entity {
 		if (canMove) {
 			handleMovement();
 		} else {}
+
+		var line = Line.get();
+		for (i in 0...raycastCount) {
+			line.set_from_vector(body.get_position(), 360 * (i / raycastCount), raycastLength);
+			var result = line.linecast(PlayState.terrainTiles.get_group_bodies());
+			if (result != null) {
+				trace("collided!!!");
+			}
+		}
+		line.put();
 	}
 
 	function handleMovement() {
@@ -124,7 +149,7 @@ class Thruster extends Entity {
 			amount: 1,
 			lifespan: trailLifespan,
 			lifespanDrift: trailLifespanDrift,
-			velocity: Vector2.fromPolar((Math.PI / 180) * (body.rotation + 180 + randAngle), 110 + direction.length / 2),
+			velocity: Vector2.fromPolar((Math.PI / 180) * (body.rotation + 180 + randAngle), 100 + direction.length / 2),
 			velocityDrift: new FlxRange(-30.0, 30.0),
 			rotational_velocity: new FlxRange(-500.0, 500.0),
 			bodyDrag: 600,

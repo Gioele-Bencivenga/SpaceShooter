@@ -42,7 +42,7 @@ class Player extends Thruster {
 	override function update(elapsed:Float) {
 		super.update(elapsed);
 
-		// if(canMove){ experiment with this
+		// if(canMove){ // experiment with this
 		handleInput();
 		// }
 
