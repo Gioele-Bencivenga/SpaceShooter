@@ -44,6 +44,8 @@
 
 	<!-- Physics library by austineast -->
 	<haxelib name="echo" />
+	<!-- Adds an `object` field with `FlxObject` type to echo's `Body` class -->
+	<haxeflag name="--macro" value="echo.Macros.add_data('object','flixel.FlxObject')" />
 
 	<!-- AdMob extension for displaying ads -->
 	<!-- <haxelib name="extension-admob" /> -->

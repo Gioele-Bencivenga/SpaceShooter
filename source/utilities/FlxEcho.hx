@@ -15,9 +15,9 @@ import flixel.FlxObject.*;
 import flixel.FlxObject;
 import flixel.group.FlxGroup;
 
-using hxmath.math.Vector2;
 using Math;
 using Std;
+using hxmath.math.Vector2;
 
 #if FLX_DEBUG
 import echo.util.Debug.OpenFLDebug;
@@ -25,9 +25,6 @@ import flixel.system.ui.FlxSystemButton;
 import openfl.display.BitmapData;
 #end
 
-/**
- * thanks to @austineast and @01010111 for this! from https://gist.github.com/AustinEast/524db026a4fea298a0eebf19459131cc
- */
 class FlxEcho extends FlxBasic {
 	/**
 	 * Gets the FlxEcho instance, which contains the current Echo World. May be Null if `FlxEcho.init` has not been called.
@@ -112,6 +109,7 @@ class FlxEcho extends FlxBasic {
 				height: object.height
 			}
 		var body = new Body(options);
+		body.object = object;
 		instance.bodies.set(object, body);
 		instance.world.add(body);
 		return body;
@@ -173,9 +171,12 @@ class FlxEcho extends FlxBasic {
 
 	public static function set_body(object:FlxObject, body:Body):Body {
 		var old_body = instance.bodies.get(object);
-		if (old_body != null)
+		if (old_body != null) {
 			old_body.dispose();
+			old_body.object = null;
+		}
 
+		body.object = object;
 		instance.bodies.set(object, body);
 		instance.world.add(body);
 		return body;
@@ -213,8 +214,10 @@ class FlxEcho extends FlxBasic {
 		if (body == null)
 			return false;
 
-		if (dispose)
+		if (dispose) {
 			body.dispose();
+			body.object = null;
+		}
 
 		return instance.bodies.remove(object);
 	}
@@ -251,14 +254,16 @@ class FlxEcho extends FlxBasic {
 		return instance.groups[group].remove(instance.bodies[object]);
 	}
 
-	static inline function update_body_object(object:FlxObject, body:Body) {
-		object.setPosition(body.x, body.y);
-		if (object.isOfType(FlxSprite)) {
-			var sprite:FlxSprite = cast object;
+	static inline function update_body_object(body:Body) {
+		if (body.object == null)
+			return;
+		body.object.setPosition(body.x, body.y);
+		if (body.object.isOfType(FlxSprite)) {
+			var sprite:FlxSprite = cast body.object;
 			sprite.x -= sprite.origin.x;
 			sprite.y -= sprite.origin.y;
 		}
-		object.angle = body.rotation + 90; // +90 to have upright sprites stay upright
+		body.object.angle = body.rotation + 90; // +90 to have upright sprites stay upright
 		if (reset_acceleration)
 			body.acceleration.set(0, 0);
 	}
@@ -329,8 +334,8 @@ class FlxEcho extends FlxBasic {
 		if (updates)
 			world.step(elapsed);
 
-		for (object => body in bodies)
-			update_body_object(object, body);
+		for (body in bodies)
+			update_body_object(body);
 	}
 
 	#if FLX_DEBUG
