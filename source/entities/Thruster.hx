@@ -76,8 +76,8 @@ class Thruster extends Entity {
 		trailLifespan = 0.2;
 
 		/// RAYCASTS
-		raycastCount = 100;
-		raycastLength = 50;
+		raycastCount = 25;
+		raycastLength = 70;
 	}
 
 	override function update(elapsed:Float) {
@@ -92,7 +92,7 @@ class Thruster extends Entity {
 			line.set_from_vector(body.get_position(), 360 * (i / raycastCount), raycastLength);
 			var result = line.linecast(PlayState.terrainTiles.get_group_bodies());
 			if (result != null) {
-				trace("collided!!!");
+				//trace("collided!!!");
 			}
 		}
 		line.put();

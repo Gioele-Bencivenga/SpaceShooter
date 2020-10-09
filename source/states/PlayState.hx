@@ -92,7 +92,14 @@ class PlayState extends FlxState {
 		entities.listen(terrainTiles);
 		entities.listen(entities);
 		emitter.listen(terrainTiles);
-		emitter.listen(entities);
+		emitter.listen(entities, {
+			// weird error with accessing touching of null, investigate
+			stay: (body1, body2, array) -> {
+				if (body2.get_object().health > 0) {
+					body2.get_object().hurt(20);
+				}
+			}
+		});
 
 		/// HUD
 		var hud = new HUD(player);
@@ -111,7 +118,7 @@ class PlayState extends FlxState {
 		switch (entity.name) {
 			case "player":
 				player = new Player();
-				player.init(entity.x, entity.y, 6, FlxColor.CYAN);
+				player.init(entity.x, entity.y - 20, 6, FlxColor.CYAN);
 				player.add_to_group(entities);
 		}
 	}

@@ -46,4 +46,9 @@ class Entity extends FlxSprite {
 		body.x = _x;
 		body.y = _y;
 	}
+
+	override function kill() {
+		super.kill();
+		body.remove_body();
+	}
 }

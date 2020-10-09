@@ -17,6 +17,9 @@ class Player extends Thruster {
 	override function init(_x:Float, _y:Float, _radius:Int, _color:FlxColor) {
 		super.init(_x, _y, _radius, _color);
 
+		/// STATS
+		health = 100;
+
 		/// BODY
 		body.clear_shapes();
 		body.create_shape({
