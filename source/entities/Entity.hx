@@ -13,7 +13,7 @@ class Entity extends FlxSprite {
 	public static inline final MAX_ROTATIONAL_VELOCITY = 1000;
 
 	/**
-	 * Whether the Thruster can move or not
+	 * Whether the Entity can move or not
 	 */
 	var canMove:Bool = false;
 
