@@ -96,7 +96,7 @@ class PlayState extends FlxState {
 			// weird error with accessing touching of null, investigate
 			stay: (body1, body2, array) -> {
 				if (body2.get_object().health > 0) {
-					body2.get_object().hurt(20);
+					body2.get_object().hurt(20); // override method to make entity flicker and not register damage multiple times per frame
 				}
 			}
 		});
