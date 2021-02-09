@@ -1,6 +1,5 @@
 package states;
 
-import flixel.util.FlxCollision;
 import entities.hostiles.Turret;
 import utilities.EchoEmitter;
 import echo.util.TileMap;
@@ -12,7 +11,6 @@ import flixel.group.FlxGroup;
 import flixel.util.FlxColor;
 import entities.*;
 import hostiles.*;
-import ui.*;
 import tiles.*;
 import utilities.VectorDebugLine;
 import flixel.FlxState;
@@ -100,10 +98,6 @@ class PlayState extends FlxState {
 				}
 			}
 		});
-
-		/// HUD
-		var hud = new HUD(player);
-		add(hud);
 
 		/// CAMERA SETUP
 		FlxG.camera.follow(player, FlxCameraFollowStyle.LOCKON);
