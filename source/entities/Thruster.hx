@@ -10,8 +10,8 @@ import flixel.FlxG;
 import states.PlayState;
 import flixel.math.FlxVector;
 import flixel.util.FlxColor;
-import hxmath.math.Vector2;
 
+using hxmath.math.Vector2;
 using utilities.FlxEcho;
 
 /**
@@ -135,7 +135,7 @@ class Thruster extends Entity {
 	}
 
 	function shootTrail() {
-		var normDir = Vector2.fromPolar((Math.PI / 180) * body.rotation, 9); // raius is far downwards from the body we spawn the particles
+		var normDir = Vector2.fromPolar((Math.PI / 180) * body.rotation, 9); // radius is far downwards from the body we spawn the particles
 		trailPosition = body.get_position().subtractWith(normDir);
 		var randAngle = FlxG.random.int(-15, 15);
 
