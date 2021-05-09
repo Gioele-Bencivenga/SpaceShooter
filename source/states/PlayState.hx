@@ -81,7 +81,7 @@ class PlayState extends FlxState {
 		/// ENTITIES
 		map.loadEntities(loadEntity, "entities");
 
-		var turret = new Turret(20, 1);
+		var turret = new Turret(3, 1);
 		turret.init(player.body.x - 20, player.body.y - 5, 20, FlxColor.YELLOW);
 		turret.add_to_group(entities);
 		turret.assignTarget(player);
