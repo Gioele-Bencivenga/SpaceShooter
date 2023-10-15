@@ -1,13 +1,13 @@
 package entities;
 
-import hxmath.math.Vector2;
-import flixel.math.FlxVector;
+import echo.math.Vector2;
+import flixel.math.FlxPoint;
 import flixel.math.FlxPoint;
 import flixel.util.FlxColor;
 import echo.Body;
 import flixel.FlxSprite;
 
-using utilities.FlxEcho;
+using echo.FlxEcho;
 
 /**
  * An entity that tries to stay fixed in place

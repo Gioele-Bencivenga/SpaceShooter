@@ -1,14 +1,14 @@
 package entities;
 
-import flixel.math.FlxVector;
+import flixel.math.FlxPoint;
 import flixel.util.FlxColor;
 import flixel.FlxG;
 
-using utilities.FlxEcho;
+using echo.FlxEcho;
 
 class Player extends Thruster {
 	/// CONTROLS
-	var pressPosition:FlxVector; // where the user is pressing on the screen
+	var pressPosition:FlxPoint; // where the user is pressing on the screen
 
 	public function new() {
 		super();
@@ -39,7 +39,7 @@ class Player extends Thruster {
 		animation.add("thrustFullRight", [7, 8], 5);
 		animation.add("thrustFullLeft", [9, 10], 5);
 
-		pressPosition = FlxVector.get(1, 1);
+		pressPosition = FlxPoint.get(1, 1);
 	}
 
 	override function update(elapsed:Float) {

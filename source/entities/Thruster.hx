@@ -8,11 +8,11 @@ import flixel.util.helpers.FlxRange;
 import flixel.util.helpers.FlxRangeBounds;
 import flixel.FlxG;
 import states.PlayState;
-import flixel.math.FlxVector;
+import flixel.math.FlxPoint;
 import flixel.util.FlxColor;
 
-using hxmath.math.Vector2;
-using utilities.FlxEcho;
+using echo.math.Vector2;
+using echo.FlxEcho;
 
 /**
  * An entity that can thrust and move in a missile-like fashion in a direction opposite to the mouse.
@@ -26,7 +26,7 @@ class Thruster extends Entity {
 	/**
 	 * The direction from this Thruster to where we are pressing
 	 */
-	public var direction(default, null):FlxVector;
+	public var direction(default, null):FlxPoint;
 
 	/**
 	 * Thrusters already thrust with the value of `direction.length`, this is thrust additional to that.
@@ -68,7 +68,7 @@ class Thruster extends Entity {
 		canMove = true;
 		thrust = 0;
 		rotationalThrust = 300;
-		direction = FlxVector.get(1, 1);
+		direction = FlxPoint.get(1, 1);
 
 		/// TRAIL
 		trailPosDrift = 4;
@@ -100,7 +100,7 @@ class Thruster extends Entity {
 
 	function handleMovement() {
 		if (isThrusting) {
-			var rotationVect = FlxVector.get(1, 1);
+			var rotationVect = FlxPoint.get(1, 1);
 			rotationVect.degrees = body.rotation - 0; // -180 for making the player follow the mouse?
 
 			var distanceFromTargetAngle = rotationVect.crossProductLength(direction);
@@ -125,7 +125,7 @@ class Thruster extends Entity {
 				body.rotational_velocity = 0;
 			}
 
-			var actualDir = Vector2.fromPolar((Math.PI / 180) * body.rotation, direction.length * 2 + thrust);
+			var actualDir = Vector2.from_radians(body.rotation, direction.length * 2 + thrust);
 			body.acceleration.set(actualDir.x, actualDir.y);
 
 			shootTrail();
@@ -135,8 +135,8 @@ class Thruster extends Entity {
 	}
 
 	function shootTrail() {
-		var normDir = Vector2.fromPolar((Math.PI / 180) * body.rotation, 9); // radius is far downwards from the body we spawn the particles
-		trailPosition = body.get_position().subtractWith(normDir);
+		var normDir = Vector2.from_radians(body.rotation, 9); // radius is far downwards from the body we spawn the particles
+		trailPosition = body.get_position() - (normDir);
 		var randAngle = FlxG.random.int(-15, 15);
 
 		PlayState.emitter.fire({
@@ -149,7 +149,7 @@ class Thruster extends Entity {
 			amount: 1,
 			lifespan: trailLifespan,
 			lifespanDrift: trailLifespanDrift,
-			velocity: Vector2.fromPolar((Math.PI / 180) * (body.rotation + 180 + randAngle), 100 + direction.length / 2),
+			velocity: Vector2.from_radians(body.rotation + 180 + randAngle, 100 + direction.length / 2),
 			velocityDrift: new FlxRange(-30.0, 30.0),
 			rotational_velocity: new FlxRange(-500.0, 500.0),
 			bodyDrag: 600,

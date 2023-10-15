@@ -7,11 +7,11 @@ import flixel.util.FlxDestroyUtil;
 import flixel.math.FlxPoint;
 import flixel.util.helpers.FlxRange;
 import flixel.util.FlxColor;
-import hxmath.math.Vector2;
+import echo.math.Vector2;
 import flixel.FlxSprite;
 import flixel.util.helpers.FlxRangeBounds;
 
-using utilities.FlxEcho;
+using echo.FlxEcho;
 
 /**
  * Particle class inspired by FlxParticle and modified in order to have an easier

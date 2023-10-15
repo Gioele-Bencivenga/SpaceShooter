@@ -1,7 +1,7 @@
 package entities;
 
-import flixel.math.FlxVector;
-import hxmath.math.Vector2;
+import flixel.math.FlxPoint;
+import echo.math.Vector2;
 import flixel.util.FlxTimer;
 import flixel.FlxG;
 import flixel.util.FlxColor;
@@ -53,7 +53,7 @@ class Follower extends Thruster {
 			desiredPoint.x += offsetX;
 			desiredPoint.y += offsetY;
 
-			direction = FlxVector.weak(desiredPoint.x - getMidpoint().x, desiredPoint.y - getMidpoint().y);
+			direction = FlxPoint.weak(desiredPoint.x - getMidpoint().x, desiredPoint.y - getMidpoint().y);
 			direction.length = distanceFromPoint;
 
 			if (distanceFromPoint > maxDistanceFromPoint) {

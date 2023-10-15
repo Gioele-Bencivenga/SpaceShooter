@@ -1,12 +1,12 @@
 package entities.hostiles;
 
 import flixel.FlxG;
-import hxmath.math.Vector2;
+import echo.math.Vector2;
 import states.PlayState;
 import flixel.util.FlxTimer;
 import flixel.util.FlxColor;
 
-using utilities.FlxEcho;
+using echo.FlxEcho;
 
 /**
  * An entity that periodically shoots something when it has a target
@@ -58,7 +58,7 @@ class Turret extends Fixed {
 			missile.init(body.x + FlxG.random.int(-40, 40), body.y - radius, 3, FlxColor.RED);
 			missile.assignTarget(target);
 			missile.add_to_group(PlayState.entities);
-			var dir = Vector2.fromPolar((Math.PI / 180) * body.rotation + FlxG.random.int(-45, 45), 1000);
+			var dir = Vector2.from_radians(body.rotation + FlxG.random.int(-45, 45), 1000);
 			missile.body.velocity.set(dir.x, dir.y);
 			missile.body.rotational_velocity = FlxG.random.float(-Entity.MAX_ROTATIONAL_VELOCITY, Entity.MAX_ROTATIONAL_VELOCITY);
 		}

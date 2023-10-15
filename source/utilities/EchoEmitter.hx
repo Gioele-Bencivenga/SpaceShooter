@@ -3,7 +3,7 @@ package utilities;
 import entities.EchoParticle;
 import flixel.group.FlxGroup;
 
-using utilities.FlxEcho;
+using echo.FlxEcho;
 
 /**
  * A particle emitter class.

@@ -1,6 +1,6 @@
 # Vector Conventions (thanks to @Markl)
 
-Some conventions regarding FlxVectors that I learnt thanks to @Markl's help in the Flixel discord.
+Some conventions regarding FlxPoints that I learnt thanks to @Markl's help in the Flixel discord.
 
 ## get()
 
@@ -17,15 +17,15 @@ It's specifically for chaining stuff together.
 
 ``` haxe
 // I want to subtract the point 10, 10 from vector
-var vector = FlxVector.get(1,1);
+var vector = FlxPoint.get(1,1);
 
 // without weak():
-var tenten = FlxVector.get(10,10);
+var tenten = FlxPoint.get(10,10);
 v.subtractPoint(tenten);
 tenten.put();
 
 // with weak
-var tenten = FlxVector.weak(10,10);
+var tenten = FlxPoint.weak(10,10);
 v.subtractPoint(tenten);
 // no need for this put(), subtractPoint() did it for us, because tenten was weak!
 tenten.put();

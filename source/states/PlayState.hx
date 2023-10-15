@@ -15,7 +15,7 @@ import tiles.*;
 import utilities.VectorDebugLine;
 import flixel.FlxState;
 
-using utilities.FlxEcho;
+using echo.FlxEcho;
 
 class PlayState extends FlxState {
 	/// TILEMAP STUFF
@@ -110,7 +110,7 @@ class PlayState extends FlxState {
 		switch (entity.name) {
 			case "player":
 				player = new Player();
-				player.init(entity.x, entity.y - 20, 6, FlxColor.CYAN);
+				player.init(entity.x, entity.y, 6, FlxColor.CYAN);
 				player.add_to_group(entities);
 		}
 	}

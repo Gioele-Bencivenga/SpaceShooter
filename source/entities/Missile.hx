@@ -48,7 +48,7 @@ class Missile extends Thruster {
 		});
 
 		body.max_velocity_length += 10;
-		body.gravity_scale = 0.5;
+		body.material.gravity_scale = 0.5;
 
 		minOffsetX = minOffsetY = -30;
 		maxOffsetX = maxOffsetY = 30;

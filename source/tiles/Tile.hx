@@ -4,7 +4,7 @@ import flixel.util.FlxColor;
 import echo.Body;
 import flixel.FlxSprite;
 
-using utilities.FlxEcho;
+using echo.FlxEcho;
 
 class Tile extends FlxSprite {
 	/// BODY
